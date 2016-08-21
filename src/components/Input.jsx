@@ -10,7 +10,6 @@ export default class Input extends Component {
       PropTypes.string,
       // PropTypes.arrayOf(PropTypes.number),
     ]).isRequired,
-    errors: PropTypes.array,
     placeholder: PropTypes.string.isRequired,
     ariaLabel: PropTypes.string,
     labelText: PropTypes.string.isRequired,
@@ -18,7 +17,7 @@ export default class Input extends Component {
 
   render() {
     const {
-      model, attribute, type, submodel, errors, object, value,
+      model, attribute, type, submodel, object, value,
       noLabel, inlineLabel, className, formId, id, placeholder,
       labelText, ariaLabel, onChange, name
     } = this.props

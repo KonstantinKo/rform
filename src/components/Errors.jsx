@@ -2,16 +2,16 @@ import React, { PropTypes, Component } from 'react'
 
 export default class Errors extends Component {
   static propTypes = {
-    errors: PropTypes.array,
+    allErrors: PropTypes.array.isRequired,
   }
 
   render() {
-    const { errors } = this.props
+    const { allErrors } = this.props
 
-    if (errors && errors.length > 0) {
+    if (allErrors && allErrors.length) {
       return (
         <span className='inline-errors'>
-          {errors.join(', ')}
+          {allErrors.join(', ')}
         </span>
       )
     } else {
@@ -19,5 +19,3 @@ export default class Errors extends Component {
     }
   }
 }
-
-Errors.isRform = true

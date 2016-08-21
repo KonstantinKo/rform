@@ -7,7 +7,7 @@ import InputSet from './wrappers/InputSet'
 import Input from './containers/Input'
 import Button from './wrappers/Button'
 import Label from './wrappers/Label'
-import Errors from './components/Errors'
+import Errors from './wrappers/Errors'
 import FormObject from './FormObject'
 
 import updateAction from './actions/updateAction'
