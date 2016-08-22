@@ -21,6 +21,8 @@ const mapStateToProps = function(state, ownProps) {
     ownProps.model, ownProps.submodel, ownProps.attribute, 'placeholder'
   )
 
+  const combinedClassName = `${ownProps.className} ${ownProps.inputClassName}`
+
   // let ariaLabel, placeholderOrLabel = placeholder
   // if (inlineLabel) {
   //   ariaLabel = label
@@ -32,6 +34,7 @@ const mapStateToProps = function(state, ownProps) {
     name,
     id: getId(ownProps.model, ownProps.submodel, ownProps.attribute),
     placeholder,
+    combinedClassName,
   }
 }
 
@@ -45,12 +48,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   onChange(event) {
-    return dispatchProps.dispatch(
+    dispatchProps.dispatch(
       updateAction(
         ownProps.formId, ownProps.attribute, ownProps.submodel,
         event.target.value
       )
     )
+
+    if (ownProps.submitOnChange) {
+      event.target.form.submit()
+    }
   }
 
   // onBlur(attribute, formObject) {

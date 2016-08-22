@@ -1,4 +1,8 @@
 import React, { PropTypes, Component } from 'react'
+import Default from './inputs/Default'
+import FileField from './inputs/FileField'
+import Textarea from './inputs/Textarea'
+import Select from './inputs/Select'
 
 export default class Input extends Component {
   static propTypes = {
@@ -10,54 +14,27 @@ export default class Input extends Component {
       PropTypes.string,
       // PropTypes.arrayOf(PropTypes.number),
     ]).isRequired,
-    placeholder: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
     ariaLabel: PropTypes.string,
     labelText: PropTypes.string.isRequired,
   }
 
   render() {
-    const {
-      model, attribute, type, submodel, object, value,
-      noLabel, inlineLabel, className, formId, id, placeholder,
-      labelText, ariaLabel, onChange, name
-    } = this.props
+    const { type } = this.props
 
     switch (type) {
     case 'textarea':
-      return (
-        <textarea
-          id={id}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          aria-label={ariaLabel || labelText}
-          onChange={onChange}
-        />
-      )
+      return <Textarea {...this.props} />
 
-    case 'file': // no value
-      return(
-        <input
-          id={id}
-          type={'file'}
-          name={name}
-          aria-label={ariaLabel || labelText}
-          onChange={onChange}
-        />
-      )
+    case 'file':
+      return <FileField {...this.props} />
+
+    case 'select':
+    case 'dropdown':
+      return <Select {...this.props} />
 
     default:
-      return(
-        <input
-          id={id}
-          type={type || 'text'}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          aria-label={ariaLabel || labelText}
-          onChange={onChange}
-        />
-      )
+      return <Default {...this.props} />
     }
   }
 }

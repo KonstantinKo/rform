@@ -1,15 +1,19 @@
 import assign from 'lodash/assign'
 import forIn from 'lodash/forIn'
 
-export const initialAjaxSubmissionState = {
+export const initialState = {
   isSubmitting: {}
 }
 
-export default function ajaxSubmissionReducer(state = initialAjaxSubmissionState, action) {
+export default function reducer(state = initialAjaxSubmissionState, action) {
   const { type, response } = action
   let newState = assign({}, state)
 
   switch (type) {
+  case 'SET_FORM':
+    newState[action.formId] = action.formData
+    return newState
+
   case 'SUBMIT_AJAX_FORM_REQUEST':
     newState.isSubmitting[action.formObjectName] = true
     return newState

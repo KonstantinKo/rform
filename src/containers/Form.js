@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import merge from 'lodash/merge'
 import { cloneElement, Children } from 'react'
 
-import { setEntity } from '../actions/entityActions'
+import setForm from '../actions/setupAction'
 import submitAjaxForm from '../actions/submitAjaxForm'
 import Form from '../components/Form'
 
@@ -22,6 +22,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const authToken = ownProps.authToken || state.authToken
+  const model = ownProps.model || ownProps.formObjectClass.model
   const formObject = new ownProps.formObjectClass(editedStateObject)
 
   return {
@@ -37,6 +38,7 @@ const mapStateToProps = (state, ownProps) => {
     hiddenMethod,
     authToken,
     combinedClassName: `rform-form ${ownProps.className}`,
+    model,
   }
 }
 
@@ -86,7 +88,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ensureStateObjectExistence() {
     if (stateProps.editedStateObject) return
     return dispatchProps.dispatch(
-      setEntity(stateProps.formId, stateProps.existingAttrs)
+      setForm(stateProps.formId, stateProps.existingAttrs)
     )
   },
 })

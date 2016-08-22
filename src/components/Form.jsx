@@ -24,7 +24,6 @@ export default class Form extends Component {
     combinedClassName: PropTypes.string.isRequired,
     formMethod: PropTypes.string.isRequired,
     hiddenMethod: PropTypes.string,
-    children: PropTypes.array.isRequired,
   }
 
   static childContextTypes = {
