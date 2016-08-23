@@ -3,6 +3,7 @@ import Default from './inputs/Default'
 import FileField from './inputs/FileField'
 import Textarea from './inputs/Textarea'
 import Select from './inputs/Select'
+import Checkbox from '../containers/inputs/Checkbox'
 
 export default class Input extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ export default class Input extends Component {
     formObject: PropTypes.object.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.string,
+      PropTypes.bool,
       // PropTypes.arrayOf(PropTypes.number),
     ]).isRequired,
     placeholder: PropTypes.string,
@@ -28,6 +30,9 @@ export default class Input extends Component {
 
     case 'file':
       return <FileField {...this.props} />
+
+    case 'checkbox':
+      return <Checkbox {...this.props} />
 
     case 'select':
     case 'dropdown':
