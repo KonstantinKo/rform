@@ -1,5 +1,4 @@
-import reducer, {initialAjaxSubmissionState as initialState}
-  from './reducers/index'
+import reducer, { initialState } from './reducers/index'
 
 import Form from './containers/Form'
 import FormButton from './containers/FormButton'
