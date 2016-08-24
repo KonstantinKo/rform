@@ -4,7 +4,7 @@ import Button from '../components/Button'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    combinedClassName: `button ${ownProps.className}`,
+    combinedClassName: ['button', ownProps.className].join(' ')
   }
 }
 

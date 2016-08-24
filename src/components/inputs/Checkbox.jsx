@@ -4,11 +4,11 @@ export default class Checkbox extends Component {
   render() {
     const {
       id, name, ariaLabel, labelText, onChange, combinedClassName,
-      checked, checkedValue, uncheckedValue,
+      checkboxWrapperClassName, checked, checkedValue, uncheckedValue,
     } = this.props
 
     return (
-      <span>
+      <span className={checkboxWrapperClassName}>
         <input
           type='hidden'
           name={name}

@@ -7,7 +7,7 @@ import React, { PropTypes, Component } from 'react'
 // up it's children with information about the outer form.
 export default class Form extends Component {
   static propTypes = {
-    formObjectClass: PropTypes.func.isRequired,
+    formObjectClass: PropTypes.func,
     formObject: PropTypes.object.isRequired,
     seedData: PropTypes.object,
     existingAttrs: PropTypes.object.isRequired,
