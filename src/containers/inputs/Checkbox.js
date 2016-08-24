@@ -7,9 +7,13 @@ const mapStateToProps = function(state, ownProps) {
   const uncheckedValue = ownProps.checkedValue || '0'
   const checked = ownProps.value
 
+  let combinedClassName = this.props.combinedClassName + ''
+  if (checked) combinedClassName += ' checked'
+
   return {
     checkedValue,
     uncheckedValue,
+    combinedClassName,
   }
 }
 
