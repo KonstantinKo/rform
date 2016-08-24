@@ -21,16 +21,8 @@ const mapStateToProps = function(state, ownProps) {
     ownProps.model, ownProps.submodel, ownProps.attribute, 'placeholder'
   )
 
-  let combinedClassName = `input-${ownProps.attribute}`
-  if (ownProps.className) {
-    combinedClassName += ` ${ownProps.className}`
-  }
-
-  // let ariaLabel, placeholderOrLabel = placeholder
-  // if (inlineLabel) {
-  //   ariaLabel = label
-  //   placeholderOrLabel = label
-  // }
+  const combinedClassName =
+	  [`input-${ownProps.attribute}`, ownProps.className].join(' ')
 
   return {
     value,

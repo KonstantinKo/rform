@@ -14,6 +14,16 @@ export default function reducer(state = initialAjaxSubmissionState, action) {
     newState[action.formId] = action.formData
     return newState
 
+  case 'UPDATE_FORM_ATTRIBUTE':
+    const formBasePath = newState[action.formId]
+    if (action.submodel) {
+      if (!formBasePath[action.submodel]) formBasePath[action.submodel] = {}
+      formBasePath[action.submodel][action.attribute] = action.value
+    } else {
+      formBasePath[action.attribute] = action.value
+    }
+    return newState
+
   case 'SUBMIT_AJAX_FORM_REQUEST':
     newState.isSubmitting[action.formObjectName] = true
     return newState

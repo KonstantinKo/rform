@@ -4,10 +4,14 @@ import { cloneElement, Children } from 'react'
 
 import setForm from '../actions/setupAction'
 import submitAjaxForm from '../actions/submitAjaxForm'
+import defaultFormObject from '../utils/defaultFormObject'
 import Form from '../components/Form'
 
 const mapStateToProps = (state, ownProps) => {
-  const formId = ownProps.id || ownProps.formObjectClass.name
+  const formObjectClass =
+    ownProps.formObjectClass ||
+    defaultFormObject(ownProps.model, ownProps.children)
+  const formId = ownProps.id || formObjectClass.name
   const editedStateObject = state[formId]
 
   const enctype = ownProps.multipart
@@ -22,12 +26,12 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const authToken = ownProps.authToken || state.authToken
-  const model = ownProps.model || ownProps.formObjectClass.model
-  const formObject = new ownProps.formObjectClass(editedStateObject)
+  const model = ownProps.model || formObjectClass.model
+  const formObject = new formObjectClass(editedStateObject)
 
   return {
     existingAttrs: assembleAttrsFromServer(
-      ownProps.seedData, ownProps.formObjectClass
+      ownProps.seedData, formObjectClass
     ),
     formObject,
     editedStateObject,

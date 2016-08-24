@@ -3,8 +3,8 @@ import React, { PropTypes, Component } from 'react'
 export default class Checkbox extends Component {
   render() {
     const {
-      id, name, ariaLabel, labelText, onChange, checkboxWrapperClassName,
-      combinedClassName, checked, checkedValue, uncheckedValue,
+      id, name, ariaLabel, labelText, onChange, combinedClassName,
+      checkboxWrapperClassName, checked, checkedValue, uncheckedValue,
     } = this.props
 
     return (
