@@ -7,7 +7,6 @@ export default class Checkbox extends Component {
       checked, checkedValue, uncheckedValue,
     } = this.props
 
-    // No value attribute
     return (
       <span className={evenMoreCombinedClassName}>
         <input
