@@ -8,12 +8,12 @@ const mapStateToProps = function(state, ownProps) {
   const checked = ownProps.value
 
 	let checkboxWrapperClassName
-  if (checked === checkedValue) combinedClassName = 'checked'
+  if (checked === checkedValue) checkboxWrapperClassName = 'checked'
 
   return {
     checkedValue,
     uncheckedValue,
-    combinedClassName,
+    checkboxWrapperClassName,
   }
 }
 
@@ -29,6 +29,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   onChange(event) {
     const { checkedValue, uncheckedValue } = stateProps
     const { formId, attribute, submodel } = ownProps
+    console.log(event, event.target.checked)
 
     dispatchProps.dispatch(
       updateAction(
