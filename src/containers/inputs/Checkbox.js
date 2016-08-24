@@ -7,10 +7,16 @@ const mapStateToProps = function(state, ownProps) {
   const uncheckedValue = ownProps.checkedValue || '0'
   const checked = ownProps.value
 
+  let evenMoreCombinedClassName = ownProps.combinedClassName || ''
+  if (checked === checkedValue) {
+    evenMoreCombinedClassName += ' checked'
+  }
+
   return {
     checked,
     checkedValue,
-    uncheckedValue
+    uncheckedValue,
+    evenMoreCombinedClassName,
   }
 }
 
