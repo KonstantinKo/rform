@@ -9,7 +9,7 @@ export default class Checkbox extends Component {
 
     // No value attribute
     return (
-      <span>
+      <span className={checked === checkedValue ? 'checked' : ''}>
         <input
           type='hidden'
           name={name}

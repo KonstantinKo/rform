@@ -8,8 +8,9 @@ const mapStateToProps = function(state, ownProps) {
   const checked = ownProps.value
 
   return {
+    checked,
     checkedValue,
-    uncheckedValue,
+    uncheckedValue
   }
 }
 
