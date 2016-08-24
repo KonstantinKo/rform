@@ -8,7 +8,9 @@ import defaultFormObject from '../utils/defaultFormObject'
 import Form from '../components/Form'
 
 const mapStateToProps = (state, ownProps) => {
-  const formObjectClass = ownProps.formObjectClass || defaultFormObject()
+  const formObjectClass =
+    ownProps.formObjectClass ||
+    defaultFormObject(ownProps.model, ownProps.children)
   const formId = ownProps.id || formObjectClass.name
   const editedStateObject = state[formId]
 
