@@ -3,12 +3,12 @@ import React, { PropTypes, Component } from 'react'
 export default class Checkbox extends Component {
   render() {
     const {
-      id, name, ariaLabel, labelText, onChange, combinedClassName,
-      checked, checkedValue, uncheckedValue,
+      id, name, ariaLabel, labelText, onChange, checkboxWrapperClassName,
+      combinedClassName, checked, checkedValue, uncheckedValue,
     } = this.props
 
     return (
-      <span>
+      <span className={checkboxWrapperClassName}>
         <input
           type='hidden'
           name={name}
@@ -18,8 +18,8 @@ export default class Checkbox extends Component {
           id={id}
           type='checkbox'
           name={name}
-          aria-label={ariaLabel || labelText}
           className={combinedClassName}
+          aria-label={ariaLabel || labelText}
           onChange={onChange}
           value={checkedValue}
         />
