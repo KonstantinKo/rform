@@ -21,7 +21,7 @@ const mapStateToProps = function(state, ownProps) {
     ownProps.model, ownProps.submodel, ownProps.attribute, 'placeholder'
   )
 
-  const combinedClassName = `${ownProps.className} ${ownProps.inputClassName}`
+  const combinedClassName = `input-${ownProps.attribute} ${ownProps.className}`
 
   // let ariaLabel, placeholderOrLabel = placeholder
   // if (inlineLabel) {
