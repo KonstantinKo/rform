@@ -81,12 +81,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
     const { dispatch } = dispatchProps
     const { formObject } = stateProps
-    const { handleResonse, afterResonse } = ownProps
+    const { handleResponse, afterResponse } = ownProps
     const data = formObject.toFormData(event.target)
 
     dispatch(
       submitAjaxForm(
-        ownProps.action, data, formObject, handleResonse, afterResonse
+        ownProps.action, data, formObject, handleResponse, afterResponse
       )
     )
     return false
