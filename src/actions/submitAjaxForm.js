@@ -41,7 +41,7 @@ export default function submitAjaxForm(
         }
       ).then(json => {
         if (handleResponse) handleResponse(json)
-        dispatch(submitAjaxFormResponse(json, formObjectName, !!handleResponse))
+        dispatch(submitAjaxFormSuccess(json, formObjectName, !!handleResponse))
         if (afterResponse) afterResponse(json)
       })
   }
