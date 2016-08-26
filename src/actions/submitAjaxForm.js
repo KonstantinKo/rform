@@ -17,7 +17,9 @@ const submitAjaxFormSuccess = (response, formObjectName, ownResultHandling) => (
   formObjectName,
   ownResultHandling
 })
-export default function submitAjaxForm(url, data, formObject, onSuccess) {
+export default function submitAjaxForm(
+  url, data, formObject, onSuccess, afterSuccess
+) {
   const formObjectName = formObject.constructor.name
 
   return function(dispatch) {
@@ -40,6 +42,7 @@ export default function submitAjaxForm(url, data, formObject, onSuccess) {
       ).then(json => {
         if (onSuccess) onSuccess(json)
         dispatch(submitAjaxFormSuccess(json, formObjectName, !!onSuccess))
+        if (afterSuccess) afterSuccess(json.status)
       })
   }
 }
