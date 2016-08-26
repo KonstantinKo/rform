@@ -18,7 +18,7 @@ const submitAjaxFormSuccess = function(response, formObjectName) {
     formObjectName
   }
 }
-export default function submitAjaxForm(url, data, formObject) {
+export default function submitAjaxForm(url, data, formObject, callbackSuccess) {
   const formObjectName = formObject.constructor.name
 
   return function(dispatch) {
@@ -41,6 +41,8 @@ export default function submitAjaxForm(url, data, formObject) {
       ).then(json => {
         console.log('json', json)
         dispatch(submitAjaxFormSuccess(json, formObjectName))
+
+        if (callbackSuccess) callbackSuccess(json.status)
       })
   }
 }
