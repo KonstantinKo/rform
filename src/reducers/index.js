@@ -33,24 +33,26 @@ export default function reducer(state = initialAjaxSubmissionState, action) {
     return newState
 
   case 'SUBMIT_AJAX_FORM_SUCCESS':
-    let responseChanges = {}
-    switch (response.status) {
-    case 'success':
-      responseChanges[action.formObjectName] = {}
-      forIn(response.changes, (changedInstance, changedList) => {
-        responseChanges[changedList] = state[changedList] || {}
-        responseChanges[changedList][changedInstance.id] = changedInstance
-      })
-      break
-    case 'formErrors':
-      responseChanges[action.formObjectName] = state[action.formObjectName]
-      responseChanges[action.formObjectName].errors = response.errors
-      break
-    default:
-      throw `Unknown response.status "${response.status}"`
-    }
+    if (!action.ownResultHandling) {
+      let responseChanges = {}
+      switch (response.status) {
+      case 'success':
+        responseChanges[action.formObjectName] = {}
+        forIn(response.changes, (changedInstance, changedList) => {
+          responseChanges[changedList] = state[changedList] || {}
+          responseChanges[changedList][changedInstance.id] = changedInstance
+        })
+        break
+      case 'formErrors':
+        responseChanges[action.formObjectName] = state[action.formObjectName]
+        responseChanges[action.formObjectName].errors = response.errors
+        break
+      default:
+        throw `Unknown response.status "${response.status}"`
+      }
 
-    newState = assign(newState, responseChanges)
+      newState = assign(newState, responseChanges)
+    }
     newState.isSubmitting[action.formObjectName] = false
     return newState
 

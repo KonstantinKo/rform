@@ -19,9 +19,8 @@ const mapStateToProps = (state, ownProps) => {
     : 'application/x-www-form-urlencoded'
 
   let formMethod = ownProps.method || 'POST'
-  let hiddenMethod
-  if (['GET', 'POST'].indexOf(formMethod) < 0) {
-    hiddenMethod = formMethod
+  let hiddenMethod = formMethod
+  if (['GET', 'POST'].indexOf(formMethod) < 0) { // is non-standard method
     formMethod = 'POST'
   }
 
@@ -78,14 +77,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   onSubmit(event) {
     if (!ownProps.ajax) { return true }
-    event.preventDefault()
+    if (event.preventDefault) event.preventDefault()
 
     const { dispatch } = dispatchProps
     const { formObject } = stateProps
-    const data = formObject.toFormData(event.nativeEvent.target)
+    const { onAjaxSuccess } = ownProps
+    const data = formObject.toFormData(event.target)
 
-    dispatch(submitAjaxForm(ownProps.action, data, formObject))
-
+    dispatch(submitAjaxForm(ownProps.action, data, formObject, onAjaxSuccess))
     return false
   },
 

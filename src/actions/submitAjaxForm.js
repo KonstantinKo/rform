@@ -11,14 +11,13 @@ const submitAjaxFormFailure = function(error, formObjectName) {
     formObjectName
   }
 }
-const submitAjaxFormSuccess = function(response, formObjectName) {
-  return {
-    type: 'SUBMIT_AJAX_FORM_SUCCESS',
-    response,
-    formObjectName
-  }
-}
-export default function submitAjaxForm(url, data, formObject) {
+const submitAjaxFormSuccess = (response, formObjectName, ownResultHandling) => ({
+  type: 'SUBMIT_AJAX_FORM_SUCCESS',
+  response,
+  formObjectName,
+  ownResultHandling
+})
+export default function submitAjaxForm(url, data, formObject, onSuccess) {
   const formObjectName = formObject.constructor.name
 
   return function(dispatch) {
@@ -26,7 +25,7 @@ export default function submitAjaxForm(url, data, formObject) {
 
     //const fetch = require('isomorphic-fetch') // regular import breaks in SSR
     return fetch(url + '.json', {
-      method: (data.get('_method')),
+      method: 'POST', // data.get('_method')
       body: data,
       credentials: 'same-origin'
     }).then(
@@ -39,8 +38,8 @@ export default function submitAjaxForm(url, data, formObject) {
           return response.json()
         }
       ).then(json => {
-        console.log('json', json)
-        dispatch(submitAjaxFormSuccess(json, formObjectName))
+        if (onSuccess) onSuccess(json)
+        dispatch(submitAjaxFormSuccess(json, formObjectName, !!onSuccess))
       })
   }
 }
