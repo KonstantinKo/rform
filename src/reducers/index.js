@@ -37,7 +37,6 @@ export default function reducer(state = initialAjaxSubmissionState, action) {
       let responseChanges = {}
       switch (response.status) {
       case 'success':
-        responseChanges[action.formId] = {}
         forIn(response.changes, (changedInstance, changedList) => {
           responseChanges[changedList] = state[changedList] || {}
           responseChanges[changedList][changedInstance.id] = changedInstance
