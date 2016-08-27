@@ -10,18 +10,15 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick(_e) {
-    const formObjectName = ownProps.formObject.constructor.name
+    const formId = ownProps.formId
 
     return dispatch(
-      updateAction(formObjectName, 'commit', null, ownProps.commit)
+      updateAction(formId, 'commit', null, ownProps.commit)
     )
   }
 })
 
-const connected = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Button)
-connected.isButton = true
-
-export default connected

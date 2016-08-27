@@ -1,29 +1,27 @@
-const submitAjaxFormRequest = function(formObjectName) {
+const submitAjaxFormRequest = function(formId) {
   return {
     type: 'SUBMIT_AJAX_FORM_REQUEST',
-    formObjectName
+    formId
   }
 }
-const submitAjaxFormFailure = function(error, formObjectName) {
+const submitAjaxFormFailure = function(error, formId) {
   return {
     type: 'SUBMIT_AJAX_FORM_FAILURE',
     error,
-    formObjectName
+    formId
   }
 }
-const submitAjaxFormSuccess = (response, formObjectName, ownResultHandling) => ({
+const submitAjaxFormSuccess = (response, formId, ownResultHandling) => ({
   type: 'SUBMIT_AJAX_FORM_SUCCESS',
   response,
-  formObjectName,
+  formId,
   ownResultHandling
 })
 export default function submitAjaxForm(
-  url, data, formObject, handleResponse, afterResponse
+  formId, url, data, formObject, handleResponse, afterResponse
 ) {
-  const formObjectName = formObject.constructor.name
-
   return function(dispatch) {
-    dispatch(submitAjaxFormRequest(formObjectName))
+    dispatch(submitAjaxFormRequest(formId))
 
     //const fetch = require('isomorphic-fetch') // regular import breaks in SSR
     return fetch(url + '.json', {
@@ -34,14 +32,14 @@ export default function submitAjaxForm(
         function(response) {
           const { status, statusText } = response
           if (status >= 400) {
-            dispatch(submitAjaxFormFailure(response, formObjectName))
+            dispatch(submitAjaxFormFailure(response, formId))
             throw new Error(`Submit Ajax Form Error ${status}: ${statusText}`)
           }
           return response.json()
         }
       ).then(json => {
         if (handleResponse) handleResponse(json)
-        dispatch(submitAjaxFormSuccess(json, formObjectName, !!handleResponse))
+        dispatch(submitAjaxFormSuccess(json, formId, !!handleResponse))
         if (afterResponse) afterResponse(json)
       })
   }

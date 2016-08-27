@@ -3,7 +3,7 @@ import Button from '../containers/Button'
 
 export default class ButtonWrapper extends Component {
   static contextTypes = {
-    formObject: PropTypes.object,
+    formId: PropTypes.string,
   }
 
   render() {
