@@ -5,8 +5,10 @@ import Errors from '../components/Errors'
 const mapStateToProps = function(state, ownProps) {
   let allErrors = ownProps.errors
   if (!allErrors || !allErrors.length) {
-    allErrors =
-      getErrors(state[ownProps.formId], ownProps.attribute, ownProps.errors)
+    allErrors = getErrors(
+      state[ownProps.formId], ownProps.attribute, ownProps.submodel,
+      ownProps.errors
+    )
   }
 
   return {

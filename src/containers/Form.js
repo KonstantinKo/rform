@@ -40,7 +40,7 @@ const mapStateToProps = (state, ownProps) => {
     formMethod,
     hiddenMethod,
     authToken,
-    combinedClassName: `rform-form ${ownProps.className}`,
+    combinedClassName: ['rform-form', ownProps.className].join(' '),
     model,
   }
 }
