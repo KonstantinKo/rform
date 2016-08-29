@@ -31,6 +31,8 @@ export default class Form extends Component {
     model: PropTypes.string,
     // serverErrors: PropTypes.array,
     formId: PropTypes.string,
+    form: PropTypes.object,
+    onSubmit: PropTypes.func,
   }
 
   getChildContext() {
@@ -39,6 +41,8 @@ export default class Form extends Component {
       model: this.props.model,
       // serverErrors: this.props.errors,
       formId: this.props.formId,
+      form: this._form,
+      onSubmit: this.props.onSubmit,
     }
   }
 
