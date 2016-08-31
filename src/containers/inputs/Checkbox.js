@@ -11,7 +11,6 @@ const mapStateToProps = function(state, ownProps) {
   if (checked === checkedValue) checkboxWrapperClassName = 'checked'
 
   return {
-    checked,
     checkedValue,
     uncheckedValue,
     checkboxWrapperClassName,

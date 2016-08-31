@@ -18,8 +18,8 @@ export default class Checkbox extends Component {
           id={id}
           type='checkbox'
           name={name}
-          className={combinedClassName}
           aria-label={ariaLabel || labelText}
+          className={combinedClassName}
           onChange={onChange}
           value={checkedValue}
         />
