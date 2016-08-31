@@ -7,7 +7,10 @@ import Input from './wrappers/Input'
 import Button from './wrappers/Button'
 import Label from './wrappers/Label'
 import Errors from './wrappers/Errors'
-import FormObject from './FormObject'
+
+import FormObject from './object/FormObject'
+import FormDataAdapter from './object/adapters/FormData'
+import JsonApiAdapter from './object/adapters/JsonApi'
 
 import updateAction from './actions/updateAction'
 import { getId, getName } from './utils/modelParams'
@@ -23,6 +26,8 @@ export {
   Label,
   Errors,
   FormObject,
+  FormDataAdapter,
+  JsonApiAdapter,
   updateAction,
   getId,
   getName,

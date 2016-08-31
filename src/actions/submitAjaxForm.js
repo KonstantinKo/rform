@@ -4,44 +4,48 @@ const submitAjaxFormRequest = function(formId) {
     formId
   }
 }
-const submitAjaxFormFailure = function(error, formId) {
+const submitAjaxFormReturn = function(formId) {
   return {
-    type: 'SUBMIT_AJAX_FORM_FAILURE',
-    error,
+    type: 'SUBMIT_AJAX_FORM_RETURN',
     formId
   }
 }
-const submitAjaxFormSuccess = (response, formId, ownResultHandling) => ({
-  type: 'SUBMIT_AJAX_FORM_SUCCESS',
-  response,
+const handleAjaxResponse = (formId, changes, errors) => ({
+  type: 'HANDLE_AJAX_RESPONSE',
   formId,
-  ownResultHandling
+  changes,
+  errors
 })
 export default function submitAjaxForm(
-  formId, url, data, formObject, handleResponse, afterResponse
+  formId, url, form, formObject, handleResponse, afterResponse
 ) {
   return function(dispatch) {
     dispatch(submitAjaxFormRequest(formId))
 
     //const fetch = require('isomorphic-fetch') // regular import breaks in SSR
-    return fetch(url + '.json', {
-      method: 'POST', // data.get('_method')
-      body: data,
-      credentials: 'same-origin'
-    }).then(
-        function(response) {
-          const { status, statusText } = response
-          if (status >= 400) {
-            dispatch(submitAjaxFormFailure(response, formId))
-            throw new Error(`Submit Ajax Form Error ${status}: ${statusText}`)
-          }
-          return response.json()
+    return fetch(
+      url,
+      formObject.requestHash(form)
+    ).then(
+      function(response) {
+        const { status, statusText } = response
+        dispatch(submitAjaxFormReturn(formId))
+        if (status >= 400) {
+          throw new Error(`Submit Ajax Form Error ${status}: ${statusText}`)
         }
-      ).then(json => {
-        if (handleResponse) handleResponse(json)
-        dispatch(submitAjaxFormSuccess(json, formId, !!handleResponse))
-        if (afterResponse) afterResponse(json)
-      })
+        return response.json()
+      }
+    ).then(json => {
+      if (handleResponse) {
+        handleResponse(json)
+      } else {
+        dispatch(
+          handleAjaxResponse(formId, ...formObject.handleAjaxResponse(json))
+        )
+      }
+
+      if (afterResponse) afterResponse(json)
+    })
   }
 }
 

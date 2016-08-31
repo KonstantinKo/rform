@@ -12,6 +12,7 @@ export default class LabelWrapper extends Component {
 
   static contextTypes = {
     model: PropTypes.string,
+    formId: PropTypes.string,
   }
 
   render() {

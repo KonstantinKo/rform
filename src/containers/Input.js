@@ -1,21 +1,23 @@
 import { connect } from 'react-redux'
 import { getId, getName } from '../utils/modelParams'
 import { optionalTranslation } from '../utils/translations'
-import updateAction from '../actions/updateAction'
+import updateAction, { updateErrors } from '../actions/updateAction'
 import Input from '../components/Input'
 
 const mapStateToProps = function(state, ownProps) {
   const formId = ownProps.formId
 
   let value = ''
-  const attrs = ownProps.formObject.attributes
-  if (ownProps.submodel && attrs[ownProps.submodel]) {
+  const attrs = state[ownProps.formId]
+  if (attrs && ownProps.submodel && attrs[ownProps.submodel]) {
     value = attrs[ownProps.submodel][ownProps.attribute] || ''
-  } else {
+  } else if (attrs) {
     value = attrs[ownProps.attribute] || ''
   }
 
   const name = getName(ownProps.model, ownProps.submodel, ownProps.attribute)
+  const inputId =
+    getId(formId, ownProps.model, ownProps.submodel, ownProps.attribute)
 
   const placeholder = ownProps.placeholder || optionalTranslation(
     ownProps.model, ownProps.submodel, ownProps.attribute, 'placeholder'
@@ -27,9 +29,10 @@ const mapStateToProps = function(state, ownProps) {
   return {
     value,
     name,
-    id: getId(ownProps.model, ownProps.submodel, ownProps.attribute),
+    inputId,
     placeholder,
     combinedClassName,
+    formState: state[formId],
   }
 }
 
@@ -53,13 +56,19 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (ownProps.submitOnChange) {
       ownProps.onSubmit({ target: ownProps.form })
     }
-  }
+  },
 
-  // onBlur(attribute, formObject) {
-  //   const errors = formObject.validate(attribute)
-  //   if (!errors) return
-  //   dispatch(updateAction('NewPledgeForm', 'errors', errors))
-  // }
+  onBlur(event) {
+    const { attribute, formObjectClass, submodel, formId } = ownProps
+    const { formState } = stateProps
+
+    const formObject = new formObjectClass(stateProps.formState)
+    formObject.validate(attribute)
+    const errors = formObject.attributes.errors[attribute]
+
+    if (!errors && (!formState.errors || !formState.errors[attribute])) return
+    dispatchProps.dispatch(updateErrors(formId, attribute, submodel, errors))
+  }
 })
 
 export default connect(

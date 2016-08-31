@@ -31,7 +31,7 @@ export default class InputSet extends Component {
   render() {
     const {
       errors, combinedWrapperClassName, labelAfterInput, labelText, id,
-      ariaLabelOnly, attribute
+      ariaLabelOnly, attribute, labelClassName, errorClassName
     } = this.props
 
     if (ariaLabelOnly) {
@@ -39,7 +39,7 @@ export default class InputSet extends Component {
         <div className={combinedWrapperClassName}>
           <Input {...this.props} ariaLabel={labelText} />
 
-          <Errors attribute={attribute} errors={errors} />
+          <Errors className={errorClassName} attribute={attribute} errors={errors} />
         </div>
       )
     }
@@ -48,20 +48,20 @@ export default class InputSet extends Component {
         <div className={combinedWrapperClassName}>
           <Input {...this.props} />
 
-          <Label attribute={attribute} content={labelText}/>
+          <Label className={labelClassName} attribute={attribute} content={labelText}/>
 
-          <Errors attribute={attribute} errors={errors} />
+          <Errors className={errorClassName} attribute={attribute} errors={errors} />
         </div>
       )
     }
     else {
       return (
         <div className={combinedWrapperClassName}>
-          <Label attribute={attribute} content={labelText}/>
+          <Label className={labelClassName} attribute={attribute} content={labelText}/>
 
           <Input {...this.props} />
 
-          <Errors attribute={attribute} errors={errors} />
+          <Errors className={errorClassName} attribute={attribute} errors={errors} />
         </div>
       )
     }

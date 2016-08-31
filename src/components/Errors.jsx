@@ -6,11 +6,13 @@ export default class Errors extends Component {
   }
 
   render() {
-    const { allErrors } = this.props
+    const {
+      allErrors, combinedClassName,
+    } = this.props
 
     if (allErrors && allErrors.length) {
       return (
-        <span className='inline-errors'>
+        <span className={combinedClassName}>
           {allErrors.join(', ')}
         </span>
       )

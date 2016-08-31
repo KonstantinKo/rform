@@ -1,4 +1,4 @@
-import FormObject from '../FormObject'
+import FormObject from '../object/FormObject'
 import compact from 'lodash/compact'
 import flatten from 'lodash/flatten'
 import React from 'react'

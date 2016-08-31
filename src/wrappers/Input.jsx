@@ -10,11 +10,11 @@ export default class InputWrapper extends Component {
   }
 
   static contextTypes = {
-    formObject: PropTypes.object,
     model: PropTypes.string,
     formId: PropTypes.string,
     form: PropTypes.object,
     onSubmit: PropTypes.func,
+    formObjectClass: PropTypes.func,
   }
 
   render() {

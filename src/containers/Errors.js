@@ -11,8 +11,11 @@ const mapStateToProps = function(state, ownProps) {
     )
   }
 
+  const combinedClassName = ['inline-errors', ownProps.className].join(' ')
+
   return {
-    allErrors
+    allErrors,
+    combinedClassName,
   }
 }
 

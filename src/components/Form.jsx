@@ -6,28 +6,30 @@ import React, { PropTypes, Component } from 'react'
 // Renders the form tag with general hidden fields like auth token. Also sets
 // up it's children with information about the outer form.
 export default class Form extends Component {
-  static propTypes = {
-    formObjectClass: PropTypes.func,
-    formObject: PropTypes.object.isRequired,
-    seedData: PropTypes.object,
-    existingAttrs: PropTypes.object.isRequired,
-    ensureStateObjectExistence: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    action: PropTypes.string.isRequired,
-    authToken: PropTypes.string.isRequired,
-    model: PropTypes.string.isRequired,
-    errors: PropTypes.object,
-    method: PropTypes.string,
-    className: PropTypes.string,
-    formId: PropTypes.string.isRequired,
-    enctype: PropTypes.string.isRequired,
-    combinedClassName: PropTypes.string.isRequired,
-    formMethod: PropTypes.string.isRequired,
-    hiddenMethod: PropTypes.string.isRequired,
-  }
+  // static propTypes = {
+  //   formObjectClass: PropTypes.func,
+  //   formObject: PropTypes.object.isRequired,
+  //   seedData: PropTypes.object,
+  //   existingAttrs: PropTypes.object.isRequired,
+  //   ensureStateObjectExistence: PropTypes.func.isRequired,
+  //   onSubmit: PropTypes.func.isRequired,
+  //   action: PropTypes.string.isRequired,
+  //   authToken: PropTypes.string.isRequired,
+  //   model: PropTypes.string.isRequired,
+  //   errors: PropTypes.object,
+  //   method: PropTypes.string,
+  //   className: PropTypes.string,
+  //   formId: PropTypes.string.isRequired,
+  //   enctype: PropTypes.string.isRequired,
+  //   combinedClassName: PropTypes.string.isRequired,
+  //   formMethod: PropTypes.string.isRequired,
+  //   hiddenMethod: PropTypes.string.isRequired,
+  //   id: PropTypes.number,
+  // }
 
   static childContextTypes = {
-    formObject: PropTypes.object,
+    // formObject: PropTypes.object,
+    formObjectClass: PropTypes.func,
     model: PropTypes.string,
     // serverErrors: PropTypes.array,
     formId: PropTypes.string,
@@ -37,7 +39,8 @@ export default class Form extends Component {
 
   getChildContext() {
     return {
-      formObject: this.props.formObject,
+      // formObject: this.props.formObject,
+      formObjectClass: this.props.formObjectClass,
       model: this.props.model,
       // serverErrors: this.props.errors,
       formId: this.props.formId,

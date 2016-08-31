@@ -12,7 +12,8 @@ const mapStateToProps = function(state, ownProps) {
 
   let combinedWrapperClassName =
     [`inputset-${ownProps.attribute}`, ownProps.wrapperClassName].join(' ')
-  if (errors && errors.length) combinedWrapperClassName += ' has-errors'
+  const errorClass = ownProps.wrapperErrorClassName || 'has-errors'
+  if (errors && errors.length) combinedWrapperClassName += ' ' + errorClass
 
   const labelText = ownProps.label ||
     optionalTranslation(ownProps.model, ownProps.submodel, ownProps.attribute, 'label') ||

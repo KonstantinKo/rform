@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
+import valuesIn from 'lodash/valuesIn'
 import updateAction from '../actions/updateAction'
 import Button from '../components/Button'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    combinedClassName: ['button', ownProps.className].join(' ')
+    combinedClassName: ['button', ownProps.className].join(' '),
   }
 }
 
