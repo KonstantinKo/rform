@@ -6,11 +6,12 @@ export default class FormButton extends Component {
     action: PropTypes.string.isRequired,
     method: PropTypes.string.isRequired,
     authToken: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     className: PropTypes.string
   }
 
   render() {
-    const { action, method, authToken, children, className } = this.props
+    const { action, method, authToken, children, onSubmit, className } = this.props
 
     let combinedClassName
     if (className) {
@@ -18,10 +19,12 @@ export default class FormButton extends Component {
     }
 
     return(
-      <form action={action} method='POST'>
+      <form action={action} method='POST' ref={(ref) => this._form = ref}>
         <input type='hidden' name='authenticity_token' value={authToken} />
         <input type='hidden' name='_method' value={method} />
-        <button className={combinedClassName} type='submit'>{children}</button>
+        <button className={combinedClassName} type='submit'
+          onClick={(event) => onSubmit(event, this._form)}>
+          {children}</button>
       </form>
     )
   }
