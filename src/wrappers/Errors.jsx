@@ -3,7 +3,6 @@ import Errors from '../containers/Errors'
 
 export default class ErrorsWrapper extends Component {
   static propTypes = {
-    errors: PropTypes.array.isRequired,
     attribute: PropTypes.string.isRequired,
   }
 

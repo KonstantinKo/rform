@@ -23,7 +23,7 @@ export default class Form extends Component {
     enctype: PropTypes.string.isRequired,
     combinedClassName: PropTypes.string.isRequired,
     formMethod: PropTypes.string.isRequired,
-    hiddenMethod: PropTypes.string,
+    hiddenMethod: PropTypes.string.isRequired,
   }
 
   static childContextTypes = {
@@ -31,6 +31,8 @@ export default class Form extends Component {
     model: PropTypes.string,
     // serverErrors: PropTypes.array,
     formId: PropTypes.string,
+    form: PropTypes.object,
+    onSubmit: PropTypes.func,
   }
 
   getChildContext() {
@@ -39,11 +41,14 @@ export default class Form extends Component {
       model: this.props.model,
       // serverErrors: this.props.errors,
       formId: this.props.formId,
+      form: this._form,
+      onSubmit: this.props.onSubmit,
     }
   }
 
   componentDidMount() {
     this.props.ensureStateObjectExistence()
+    if (this.props.immediateSubmit) this.props.onSubmit({ target: this._form })
   }
 
   render() {
@@ -57,11 +62,12 @@ export default class Form extends Component {
       <form
         className={combinedClassName} action={action} method={formMethod}
         onSubmit={onSubmit} encType={enctype} id={formId}
+        ref={element => this._form = element}
       >
         <input type='hidden' name='utf8' value='&#x2713;' />
         {this.optionalHiddenField('authenticity_token', authToken)}
         {this.optionalHiddenField('commit', commit)}
-        {this.optionalHiddenField('_method', hiddenMethod)}
+        <input type='hidden' name='_method' value={hiddenMethod} />
 
         {children}
       </form>

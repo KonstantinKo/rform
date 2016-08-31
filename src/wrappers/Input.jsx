@@ -13,6 +13,8 @@ export default class InputWrapper extends Component {
     formObject: PropTypes.object,
     model: PropTypes.string,
     formId: PropTypes.string,
+    form: PropTypes.object,
+    onSubmit: PropTypes.func,
   }
 
   render() {
