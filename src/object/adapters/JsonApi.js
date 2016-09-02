@@ -26,7 +26,7 @@ export default class JsonApiAdapter extends BaseAdapter {
         merge(json.data.attributes, { id: json.data.id })
     }
 
-    return [changes, json.errors]
+    return [changes, json.errors, json.meta]
   }
 
   // --- Private --- //

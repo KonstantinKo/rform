@@ -18,6 +18,6 @@ export default class InputWrapper extends Component {
   }
 
   render() {
-    return <Input {...this.props} {...this.context} />
+    return <Input {...this.context} {...this.props} />
   }
 }

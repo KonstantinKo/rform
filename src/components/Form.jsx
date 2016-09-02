@@ -54,6 +54,12 @@ export default class Form extends Component {
     if (this.props.immediateSubmit) this.props.onSubmit({ target: this._form })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.formId != prevProps.formId) {
+      this.props.ensureStateObjectExistence()
+    }
+  }
+
   render() {
     const {
       onSubmit, children, multipart, className, commit, formId,

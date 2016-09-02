@@ -85,7 +85,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const { handleResponse, afterResponse } = ownProps
 
     const formObject = new formObjectClass(editedStateObject)
-    if (ownProps.validate && !validateForm(formObject)) {
+    if (ownProps.requireValid && !validateForm(formObject)) {
       dispatch(
         updateForm(formId, 'errors', null, formObject.attributes.errors)
       )

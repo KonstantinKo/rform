@@ -10,12 +10,15 @@ export default class Input extends Component {
 
   render() {
     const {
-      children, combinedClassName, onClick
+      children, combinedClassName, onClick, form
     } = this.props
 
 
     return (
-      <button className={combinedClassName} onClick={onClick} type='submit'>
+      <button
+        form={form} className={combinedClassName} onClick={onClick}
+        type='submit'
+      >
         {children}
       </button>
     )

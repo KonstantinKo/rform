@@ -13,6 +13,7 @@ export default class Input extends Component {
     // formObject: PropTypes.object.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.string,
+      PropTypes.number,
       PropTypes.bool,
       // PropTypes.arrayOf(PropTypes.number),
     ]).isRequired,

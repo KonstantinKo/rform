@@ -8,9 +8,9 @@ const mapStateToProps = function(state, ownProps) {
     htmlFor:
       ownProps.htmlFor ||
       getId(ownProps.formId, ownProps.model, ownProps.submodel, ownProps.attribute),
-    content: ownProps.content || ownProps.children ||
-      optionalTranslation(ownProps.model, ownProps.submodel, ownProps.attribute, 'label') ||
-      ''
+      content: ownProps.content || ownProps.children || optionalTranslation(
+        'rform', ownProps.model, ownProps.submodel, ownProps.attribute, 'label'
+      ) || ''
   }
 }
 

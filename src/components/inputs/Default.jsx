@@ -4,12 +4,13 @@ export default class Default extends Component {
   render() {
     const {
       inputId, type, name, value, placeholder, ariaLabel, labelText, onChange,
-      onBlur, combinedClassName, min, max,
+      onBlur, combinedClassName, min, max, formId
     } = this.props
 
     return (
       <input
         id={inputId}
+        form={formId}
         type={type || 'text'}
         name={name}
         value={value}

@@ -8,17 +8,14 @@ export const initialState = {
 export default function reducer(state = initialAjaxSubmissionState, action) {
   const { type } = action
   let newState = assign({}, state)
-  let formBasePath = newState[action.formId]
 
   switch (type) {
   case 'SET_FORM':
     newState[action.formId] = action.formData
     return newState
 
-  case 'UPDATE_FORM_ERRORS':
-    newState[action.formId].errors = newState[action.formId].errors || {}
-    formBasePath = newState[action.formId].errors
   case 'UPDATE_FORM_ATTRIBUTE':
+    let formBasePath = newState[action.formId]
     if (action.submodel) {
       if (!formBasePath[action.submodel]) formBasePath[action.submodel] = {}
       formBasePath[action.submodel][action.attribute] = action.value

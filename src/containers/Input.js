@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
+import isNil from 'lodash/isNil'
 import { getId, getName } from '../utils/modelParams'
 import { optionalTranslation } from '../utils/translations'
-import updateAction, { updateErrors } from '../actions/updateAction'
+import updateAction from '../actions/updateAction'
 import Input from '../components/Input'
 
 const mapStateToProps = function(state, ownProps) {
@@ -9,10 +10,13 @@ const mapStateToProps = function(state, ownProps) {
 
   let value = ''
   const attrs = state[ownProps.formId]
-  if (attrs && ownProps.submodel && attrs[ownProps.submodel]) {
-    value = attrs[ownProps.submodel][ownProps.attribute] || ''
-  } else if (attrs) {
-    value = attrs[ownProps.attribute] || ''
+  if (
+    attrs && ownProps.submodel && attrs[ownProps.submodel] &&
+    !isNil(attrs[ownProps.submodel][ownProps.attribute])
+  ) {
+    value = String(attrs[ownProps.submodel][ownProps.attribute])
+  } else if (attrs && !isNil(attrs[ownProps.attribute])) {
+    value = String(attrs[ownProps.attribute])
   }
 
   const name = getName(ownProps.model, ownProps.submodel, ownProps.attribute)
@@ -20,7 +24,8 @@ const mapStateToProps = function(state, ownProps) {
     getId(formId, ownProps.model, ownProps.submodel, ownProps.attribute)
 
   const placeholder = ownProps.placeholder || optionalTranslation(
-    ownProps.model, ownProps.submodel, ownProps.attribute, 'placeholder'
+    'rform', ownProps.model, ownProps.submodel, ownProps.attribute,
+    'placeholder'
   )
 
   const combinedClassName =
@@ -58,16 +63,17 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     }
   },
 
-  onBlur(event) {
+  onBlur(_event) {
     const { attribute, formObjectClass, submodel, formId } = ownProps
     const { formState } = stateProps
 
     const formObject = new formObjectClass(stateProps.formState)
     formObject.validate(attribute)
-    const errors = formObject.attributes.errors[attribute]
+    const errorKey = formObject.errorKey(attribute, submodel)
+    const errors = formObject.attributes.errors[errorKey]
 
-    if (!errors && (!formState.errors || !formState.errors[attribute])) return
-    dispatchProps.dispatch(updateErrors(formId, attribute, submodel, errors))
+    if (!errors && (!formState.errors || !formState.errors[errorKey])) return
+    dispatchProps.dispatch(updateAction(formId, errorKey, 'errors', errors))
   }
 })
 

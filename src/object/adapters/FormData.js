@@ -17,16 +17,18 @@ export default class FormDataAdapter extends BaseAdapter {
   }
 
   handleAjaxResponse(json) {
+    const meta = json.meta
+
     switch (json.status) {
     case 'success':
-      let changes = {}
+      let responseChanges = {}
       forIn(json.changes, (changedInstance, changedList) => {
-        responseChanges[changedList] = state[changedList] || {}
+        responseChanges[changedList] = responseChanges[changedList] || {}
         responseChanges[changedList][changedInstance.id] = changedInstance
       })
-      return [changes, null]
+      return [responseChanges, null, meta]
     case 'formErrors':
-      return [null, json.errors]
+      return [null, json.errors, meta]
     default:
       throw `Unknown json.status "${json.status}"`
     }

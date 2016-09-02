@@ -10,11 +10,12 @@ const submitAjaxFormReturn = function(formId) {
     formId
   }
 }
-const handleAjaxResponse = (formId, changes, errors) => ({
+const handleAjaxResponse = (formId, changes, errors, meta) => ({
   type: 'HANDLE_AJAX_RESPONSE',
   formId,
   changes,
-  errors
+  errors,
+  meta
 })
 export default function submitAjaxForm(
   formId, url, form, formObject, handleResponse, afterResponse

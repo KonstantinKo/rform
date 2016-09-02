@@ -15,9 +15,9 @@ const mapStateToProps = function(state, ownProps) {
   const errorClass = ownProps.wrapperErrorClassName || 'has-errors'
   if (errors && errors.length) combinedWrapperClassName += ' ' + errorClass
 
-  const labelText = ownProps.label ||
-    optionalTranslation(ownProps.model, ownProps.submodel, ownProps.attribute, 'label') ||
-    ''
+  const labelText = ownProps.label || optionalTranslation(
+      'rform', ownProps.model, ownProps.submodel, ownProps.attribute, 'label'
+    ) || ''
 
   return {
     combinedWrapperClassName,

@@ -16,9 +16,9 @@ export default class Select extends Component {
         onChange={onChange}
         value={value}
       >
-        {options.map(option => {
+        {options.map((option, index) => {
           return (
-            <option key={option.value} value={option.value}>
+            <option key={index} value={option.value}>
               {option.name}
             </option>
           )
