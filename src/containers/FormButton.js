@@ -1,20 +1,26 @@
 import { connect } from 'react-redux'
 import FormButton from '../components/FormButton'
 
-const mapStateToProps = (state, ownProps) => ({
-  authToken: state.authToken,
+const mapStateToProps = (state, ownProps) => {
+  let combinedClassName = ownProps.className || ''
 
-  onSubmit: function(event, form) {
-    const confirmationMessage = ownProps.confirm
+  return {
+    combinedClassName,
 
-    if (typeof confirmationMessage === 'string') {
-      event.preventDefault()
+    authToken: state.authToken,
 
-      const result = window.confirm(confirmationMessage)
-      if (result) { form.submit() }
+    onSubmit: function(event, form) {
+      const confirmationMessage = ownProps.confirm
+
+      if (typeof confirmationMessage === 'string') {
+        event.preventDefault()
+
+        const result = window.confirm(confirmationMessage)
+        if (result) form.submit()
+      }
     }
   }
-})
+}
 
 const mapDispatchToProps = () => ({
 })
