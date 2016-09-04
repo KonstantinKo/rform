@@ -19,10 +19,14 @@ const mapStateToProps = function(state, ownProps) {
       'rform', ownProps.model, ownProps.submodel, ownProps.attribute, 'label'
     ) || ''
 
+    const id = getId(
+      ownProps.formId, ownProps.model, ownProps.submodel, ownProps.attribute
+    )
+
   return {
     combinedWrapperClassName,
     labelText,
-    id: getId(ownProps.model, ownProps.submodel, ownProps.attribute),
+    id,
     errors,
   }
 }
