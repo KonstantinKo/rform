@@ -16,7 +16,7 @@ export default class FormButton extends Component {
     } = this.props
 
     return(
-      <form action={action} method='POST' ref={(ref) => this._form = ref}>
+      <form action={action} method='POST' ref={ref => this._form = ref}>
         <input type='hidden' name='authenticity_token' value={authToken} />
         <input type='hidden' name='_method' value={method} />
         <button
