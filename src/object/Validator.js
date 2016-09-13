@@ -51,7 +51,6 @@ export default class Validator {
       translationPath.push(predicates[predicate].argType(option))
     }
 
-    console.log(this.property, predicate, translationPath)
     return optionalTranslation(...translationPath, translationOptions)
   }
 

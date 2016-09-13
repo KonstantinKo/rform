@@ -61,6 +61,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (ownProps.submitOnChange) {
       ownProps.onSubmit({ target: ownProps.form })
     }
+
+    if (ownProps.afterChange) ownProps.afterChange(event)
   },
 
   onBlur(_event) {

@@ -24,8 +24,8 @@ export default {
   },
   'size?': {
     check: (validatable, range) =>
-      validatable.length > range[0] && validatable < range[1],
-      argType: (arg) => isArray(arg) ? 'range' : 'default',
+      validatable.length > range[0] && validatable.length < range[1],
+    argType: (arg) => isArray(arg) ? 'range' : 'default',
     translationOptions: (option) => ({
       size_left: option[0], size_right: option[1]
     }),
