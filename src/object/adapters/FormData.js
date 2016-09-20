@@ -6,12 +6,12 @@ export default class FormDataAdapter extends BaseAdapter {
     const data = this._formData
 
     return {
-      method: data.get('_method'),
+      method: this.form._method,
       body: data,
       credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
-        'X-CSRF-TOKEN': data.get('authenticity_token')
+        'X-CSRF-TOKEN': this.form.authenticity_token
       }
     }
   }
@@ -73,10 +73,10 @@ export default class FormDataAdapter extends BaseAdapter {
 
   _setFormDataValue(formData, key, value) {
     if (!value) {
-      formData.set(key, '')
+      formData.append(key, '')
     }
     else {
-      formData.set(key, value)
+      formData.append(key, value)
     }
   }
 
@@ -85,7 +85,7 @@ export default class FormDataAdapter extends BaseAdapter {
     const metaFields = [ 'utf8', 'authenticity_token', 'commit' ]
 
     for (let metaField of metaFields) {
-      formData.set(metaField, (form[metaField] && form[metaField].value))
+      formData.append(metaField, (form[metaField] && form[metaField].value))
     }
   }
 
@@ -93,6 +93,6 @@ export default class FormDataAdapter extends BaseAdapter {
     const form = this.form
     const method = form._method ? form._method.value : 'POST'
 
-    formData.set('_method', method)
+    formData.append('_method', method)
   }
 }
