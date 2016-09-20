@@ -1,6 +1,17 @@
 import React, { PropTypes, Component } from 'react'
 
 export default class Select extends Component {
+  static propTypes = {
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        value: PropTypes.oneOfType(
+          [PropTypes.string, PropTypes.number]
+        ).isRequired,
+      }).isRequired
+    ).isRequired,
+  }
+
   render() {
     const {
       id, name, value, ariaLabel, labelText, onChange, options,
