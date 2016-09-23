@@ -5,16 +5,19 @@ export default class FormDataAdapter extends BaseAdapter {
   get requestHash() {
     const data = this._formData
 
-    console.log(this._formData, this.form, this.form._method, this.form.authenticity_token)
-    return {
+    let options = {
       method: this.form._method.value,
       body: data,
       credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
-        'X-CSRF-TOKEN': this.form.authenticity_token.value
       }
     }
+
+    if (this.form.authenticity_token)
+      options.headers['X-CSRF-TOKEN'] = this.form.authenticity_token.value
+
+    return options
   }
 
   handleAjaxResponse(json) {

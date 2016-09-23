@@ -7,7 +7,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     combinedClassName,
 
-    authToken: state.authToken,
+    authToken:
+      ownProps.authToken || state.authToken ||
+      (state.settings && state.settings.authToken),
 
     onSubmit: function(event, form) {
       const confirmationMessage = ownProps.confirm

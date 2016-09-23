@@ -6,7 +6,7 @@ import InputSet from '../components/InputSet'
 
 const mapStateToProps = function(state, ownProps) {
   const errors = getErrors(
-    state[ownProps.formId], ownProps.attribute, ownProps.submodel,
+    state.rform[ownProps.formId], ownProps.attribute, ownProps.submodel,
     ownProps.errors
   )
 

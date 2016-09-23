@@ -9,7 +9,7 @@ const mapStateToProps = function(state, ownProps) {
   const formId = ownProps.formId
 
   let value = ''
-  const attrs = state[ownProps.formId]
+  const attrs = state.rform[ownProps.formId]
   if (
     attrs && ownProps.submodel && attrs[ownProps.submodel] &&
     !isNil(attrs[ownProps.submodel][ownProps.attribute])
@@ -37,7 +37,7 @@ const mapStateToProps = function(state, ownProps) {
     inputId,
     placeholder,
     combinedClassName,
-    formState: state[formId],
+    formState: attrs,
   }
 }
 

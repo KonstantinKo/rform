@@ -5,7 +5,7 @@ export const initialState = {
   isSubmitting: {}
 }
 
-export default function reducer(state = initialAjaxSubmissionState, action) {
+export default function reducer(state = initialState, action) {
   const { type } = action
   let newState = assign({}, state)
 
@@ -34,9 +34,7 @@ export default function reducer(state = initialAjaxSubmissionState, action) {
 
   case 'HANDLE_AJAX_RESPONSE':
     let responseChanges = {}
-    if (action.changes) {
-      responseChanges = action.changes
-    } else if (action.errors) {
+    if (action.errors) {
       responseChanges[action.formId] = state[action.formId]
       responseChanges[action.formId].errors = action.errors
     }

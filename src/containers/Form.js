@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     ownProps.formObjectClass ||
     defaultFormObject(ownProps.model, ownProps.children)
   const formId = ownProps.id || formObjectClass.name
-  const editedStateObject = state[formId]
+  const editedStateObject = state.rform[formId]
 
   const enctype = ownProps.multipart
     ? 'multipart/form-data'
@@ -26,7 +26,9 @@ const mapStateToProps = (state, ownProps) => {
     formMethod = 'POST'
   }
 
-  const authToken = ownProps.authToken || state.authToken
+  const authToken =
+    ownProps.authToken || state.authToken ||
+    (state.settings && state.settings.authToken)
   const model = ownProps.model || formObjectClass.model
 
   return {

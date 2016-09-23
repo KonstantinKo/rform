@@ -4,19 +4,20 @@ const submitAjaxFormRequest = function(formId) {
     formId
   }
 }
+
 const submitAjaxFormReturn = function(formId) {
   return {
     type: 'SUBMIT_AJAX_FORM_RETURN',
     formId
   }
 }
-const handleAjaxResponse = (formId, changes, errors, meta) => ({
+
+const handleAjaxResponse = (formId, _changes, errors, _meta) => ({
   type: 'HANDLE_AJAX_RESPONSE',
   formId,
-  changes,
   errors,
-  meta
 })
+
 export default function submitAjaxForm(
   formId, url, form, formObject, handleResponse, afterResponse
 ) {
@@ -38,12 +39,12 @@ export default function submitAjaxForm(
       }
     ).then(json => {
       if (handleResponse) {
-        handleResponse(json)
-      } else {
-        dispatch(
-          handleAjaxResponse(formId, ...formObject.handleAjaxResponse(json))
-        )
+        handleResponse(formId, ...formObject.handleAjaxResponse(json), json)
       }
+
+      dispatch(
+        handleAjaxResponse(formId, ...formObject.handleAjaxResponse(json))
+      )
 
       if (afterResponse) afterResponse(json)
     })
