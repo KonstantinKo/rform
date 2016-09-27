@@ -8,7 +8,6 @@ export default class Validation {
   validate(property) {
     this._resetErrors()
     this.validation()
-    if (property == 'image') console.log('erras', this.attributes.errors)
     return(
       !this.attributes.errors[property] ||
       !this.attributes.errors[property].length
