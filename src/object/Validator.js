@@ -6,11 +6,12 @@ import predicates from './predicates'
 import { optionalTranslation } from '../utils/translations'
 
 export default class Validator {
-  constructor(property, attrs, submodel, errorKey) {
+  constructor(property, attrs, submodel, errorKey, configurations = {}) {
     this.property = property
     this.attrs = attrs
     this.submodel = submodel
     this.errorKey = errorKey
+    this.configurations = configurations
   }
 
   // Require presence with optional additions
@@ -33,7 +34,8 @@ export default class Validator {
   }
 
   _checkPredicate(errors, predicate, option = null) {
-    const predicateCheck = predicates[predicate] && predicates[predicate].check
+    let predicateCheck = this._predicate(predicate)
+    if (typeof predicateCheck == 'object') predicateCheck = predicateCheck.check
     if (!predicateCheck) throw new Error(`Unknown predicate "${predicate}"`)
 
     if (!this._validatable || !predicateCheck(this._validatable, option)) {
@@ -42,16 +44,21 @@ export default class Validator {
   }
 
   _errorMessage(predicate, option) {
-    const translationOptions = predicates[predicate].translationOptions &&
-      predicates[predicate].translationOptions(option)
+    const translationOptions =
+      this._predicate(predicate).translationOptions &&
+      this._predicate(predicate).translationOptions(option)
 
     let translationPath = ['errors', predicate]
-    if (predicates[predicate].argType) {
+    if (this._predicate(predicate).argType) {
       translationPath.push('arg')
-      translationPath.push(predicates[predicate].argType(option))
+      translationPath.push(this._predicate(predicate).argType(option))
     }
 
     return optionalTranslation(...translationPath, translationOptions)
+  }
+
+  _predicate(predicate) {
+    return predicates[predicate] || this.configurations[predicate]
   }
 
   get _validatable() {
