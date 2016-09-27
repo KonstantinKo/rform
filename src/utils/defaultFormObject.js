@@ -24,6 +24,7 @@ function collectPropertiesFromAllChildren(children) {
   let properties = []
 
   React.Children.map(children, child => {
+    if (!child.props) return
     if (child.props.attribute) properties.push(child.props.attribute)
     if (child.props.children) {
       const recursiveProperties =
