@@ -45,27 +45,8 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
 })
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-
-  onChange(event) {
-    dispatchProps.dispatch(
-      updateAction(
-        ownProps.formId, ownProps.attribute, ownProps.submodel,
-        event.target.value
-      )
-    )
-
-    if (ownProps.submitOnChange) {
-      ownProps.onSubmit({ target: ownProps.form })
-    }
-
-    if (ownProps.afterChange) ownProps.afterChange(event)
-  },
-
-  onBlur(_event) {
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const validate = function() {
     const { attribute, formObjectClass, submodel, formId } = ownProps
     const { formState } = stateProps
 
@@ -77,7 +58,34 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (!errors && (!formState.errors || !formState.errors[errorKey])) return
     dispatchProps.dispatch(updateAction(formId, errorKey, 'errors', errors))
   }
-})
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+
+    onChange(event) {
+      dispatchProps.dispatch(
+        updateAction(
+          ownProps.formId, ownProps.attribute, ownProps.submodel,
+          event.target.value
+        )
+      )
+
+      if (ownProps.submitOnChange) {
+        ownProps.onSubmit({ target: ownProps.form })
+      }
+
+      if (ownProps.afterChange) ownProps.afterChange(event)
+    },
+
+    onBlur(_event) {
+      validate()
+    },
+
+    validate
+  }
+}
 
 export default connect(
   mapStateToProps,
