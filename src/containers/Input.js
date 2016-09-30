@@ -29,7 +29,7 @@ const mapStateToProps = function(state, ownProps) {
   )
 
   const combinedClassName =
-	  [`input-${ownProps.attribute}`, ownProps.className].join(' ')
+    [`input-${ownProps.attribute}`, ownProps.className].join(' ')
 
   return {
     value,

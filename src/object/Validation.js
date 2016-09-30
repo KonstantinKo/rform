@@ -18,17 +18,21 @@ export default class Validation {
     this._configurations = configurations
   }
 
-  required(property) {
+  required(property, defaultFilledPredicate = true) {
     return new Validator(
       property, this.attributes, this._currentSubmodel,
       this.errorKey(property, this._currentSubmodel),
-      this._configurations
+      defaultFilledPredicate,
+      this._configurations,
     )
   }
 
   maybe(property, options = {}) {
-    if (this.attributes[property] && options.if !== false) {
-      return this.required(property)
+    if (
+      options.if !== false ||
+      (options.if === undefined && this.attributes[property])
+    ) {
+      return this.required(property, false)
     } else {
       return new NonValidator()
     }

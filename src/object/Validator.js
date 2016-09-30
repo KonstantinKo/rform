@@ -6,17 +6,19 @@ import predicates from './predicates'
 import { optionalTranslation } from '../utils/translations'
 
 export default class Validator {
-  constructor(property, attrs, submodel, errorKey, configurations = {}) {
+  constructor(property, attrs, submodel, errorKey, defaultFilledPredicate, configurations = {}) {
     this.property = property
     this.attrs = attrs
     this.submodel = submodel
     this.errorKey = errorKey
+    this.defaultFilledPredicate = defaultFilledPredicate
     this.configurations = configurations
   }
 
   // Require presence with optional additions
   filled(...chosenPredicates) {
-    chosenPredicates.unshift('filled?')
+    if (this.defaultFilledPredicate) chosenPredicates.unshift('filled?')
+
     let errors = []
 
     for (let predicate of chosenPredicates) {
