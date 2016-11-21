@@ -1,9 +1,8 @@
 {
   "name": "rform",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "React/Redux form helpers optimized for use with Ruby on Rails",
   "main": "dist/index.js",
-  "jsnext:main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/KonstantinKo/rform.git"

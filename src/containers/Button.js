@@ -1,12 +1,35 @@
 import { connect } from 'react-redux'
-import valuesIn from 'lodash/valuesIn'
+import values from 'lodash/values'
 import assign from 'lodash/assign'
 import updateAction from '../actions/updateAction'
 import Button from '../components/Button'
 
 const mapStateToProps = (state, ownProps) => {
+  const {
+    children, formId, className, disableOnInvalid, disableOnUnchanged,
+    invalidDisabledLabel, unchangedDisabledLabel
+  } = ownProps
+  const formState = state.rform[formId]
+
+  let renderedLabel = ownProps.label || children
+  let disabled = disabled || false
+
+  if (formState) {
+    if (!disabled && disableOnInvalid && allErrors(formState).length) {
+      disabled = true
+      renderedLabel = invalidDisabledLabel || renderedLabel
+    }
+
+    if (!disabled && disableOnUnchanged && !formState._changes.length) {
+      disabled = true
+      renderedLabel = unchangedDisabledLabel || renderedLabel
+    }
+  }
+
   return {
-    combinedClassName: ['button', ownProps.className].join(' '),
+    renderedLabel,
+    disabled,
+    combinedClassName: ['button', className].join(' '),
   }
 }
 
@@ -22,7 +45,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 function allErrors(formAttributes) {
   if (!formAttributes || !formAttributes.errors) return []
-  return assign(...valuesIn(formAttributes.errors))
+  return assign(...values(formAttributes.errors))
 }
 
 export default connect(

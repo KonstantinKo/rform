@@ -5,6 +5,7 @@ export default class Checkbox extends Component {
     const {
       id, name, ariaLabel, labelText, onChange, combinedClassName,
       checkboxWrapperClassName, checked, checkedValue, uncheckedValue,
+      disabled,
     } = this.props
 
     return (
@@ -22,6 +23,7 @@ export default class Checkbox extends Component {
           className={combinedClassName}
           onChange={onChange}
           value={checkedValue}
+          disabled={disabled}
         />
       </span>
     )

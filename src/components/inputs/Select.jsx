@@ -15,7 +15,7 @@ export default class Select extends Component {
   render() {
     const {
       id, name, value, ariaLabel, labelText, onChange, options,
-      combinedClassName,
+      combinedClassName, disabled,
     } = this.props
 
     return (
@@ -26,6 +26,7 @@ export default class Select extends Component {
         className={combinedClassName}
         onChange={onChange}
         value={value}
+        disabled={disabled}
       >
         {options.map((option, index) => {
           return (

@@ -5,22 +5,29 @@ import { optionalTranslation } from '../utils/translations'
 import InputSet from '../components/InputSet'
 
 const mapStateToProps = function(state, ownProps) {
-  const errors = getErrors(
-    state.rform[ownProps.formId], ownProps.attribute, ownProps.submodel,
-    ownProps.errors
-  )
+  const {
+    attribute, submodel, wrapperClassName, wrapperErrorClassName, label,
+    formId, model,
+  } = ownProps
+
+  const formState = state.rform[formId]
+  const errors = getErrors(formState, attribute, submodel, ownProps.errors)
+
+  const changeClass =
+    formState && formState._changes.includes(attribute) ? 'changed' : 'saved'
 
   let combinedWrapperClassName =
-    [`inputset-${ownProps.attribute}`, ownProps.wrapperClassName].join(' ')
-  const errorClass = ownProps.wrapperErrorClassName || 'has-errors'
+    [`inputset-${attribute}`, wrapperClassName, changeClass]
+    .join(' ')
+  const errorClass = wrapperErrorClassName || 'has-errors'
   if (errors && errors.length) combinedWrapperClassName += ' ' + errorClass
 
-  const labelText = ownProps.label || optionalTranslation(
-      'rform', ownProps.model, ownProps.submodel, ownProps.attribute, 'label'
+  const labelText = label || optionalTranslation(
+      'rform', model, submodel, attribute, 'label'
     ) || ''
 
     const id = getId(
-      ownProps.formId, ownProps.model, ownProps.submodel, ownProps.attribute
+      formId, model, submodel, attribute
     )
 
   return {

@@ -4,7 +4,7 @@ export default class Textarea extends Component {
   render() {
     const {
       id, name, value, placeholder, ariaLabel, labelText, onChange,
-      combinedClassName,
+      combinedClassName, disabled,
     } = this.props
 
     return (
@@ -16,6 +16,7 @@ export default class Textarea extends Component {
         aria-label={ariaLabel || labelText}
         className={combinedClassName}
         onChange={onChange}
+        disabled={disabled}
       />
     )
   }

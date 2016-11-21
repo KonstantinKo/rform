@@ -4,7 +4,7 @@ export default class Default extends Component {
   render() {
     const {
       inputId, type, name, value, placeholder, ariaLabel, labelText, onChange,
-      onBlur, combinedClassName, min, max, formId
+      onBlur, combinedClassName, min, max, formId, disabled,
     } = this.props
 
     return (
@@ -21,6 +21,7 @@ export default class Default extends Component {
         onBlur={onBlur}
         min={min}
         max={max}
+        disabled={disabled}
       />
     )
   }

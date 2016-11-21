@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
     authToken,
     combinedClassName: ['rform-form', ownProps.className].join(' '),
     model,
-    formObjectClass
+    formObjectClass,
   }
 }
 

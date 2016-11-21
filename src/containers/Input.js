@@ -19,6 +19,9 @@ const mapStateToProps = function(state, ownProps) {
     value = String(attrs[ownProps.attribute])
   }
 
+  const savedValue =
+    (attrs && attrs._savedAttributes && attrs._savedAttributes[ownProps.attribute])
+
   const name = getName(ownProps.model, ownProps.submodel, ownProps.attribute)
   const inputId =
     getId(formId, ownProps.model, ownProps.submodel, ownProps.attribute)
@@ -33,10 +36,12 @@ const mapStateToProps = function(state, ownProps) {
 
   return {
     value,
+    savedValue,
     name,
     inputId,
     placeholder,
     combinedClassName,
+    disabled: (ownProps.disabled === undefined) ? false : ownProps.disabled,
     formState: attrs,
   }
 }
@@ -60,16 +65,18 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 
   return {
+    ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    ...ownProps,
 
     onChange(event) {
+      const { formId, attribute, submodel } = ownProps
+      const { savedValue } = stateProps
+      const newValue = event.target.value
+      const changed = (newValue != savedValue)
+
       dispatchProps.dispatch(
-        updateAction(
-          ownProps.formId, ownProps.attribute, ownProps.submodel,
-          event.target.value
-        )
+        updateAction(formId, attribute, submodel, newValue, changed)
       )
 
       if (ownProps.submitOnChange) {

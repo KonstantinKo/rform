@@ -1,3 +1,5 @@
+import setFormSaved from './setFormSaved'
+
 const submitAjaxFormRequest = function(formId) {
   return {
     type: 'SUBMIT_AJAX_FORM_REQUEST',
@@ -38,13 +40,17 @@ export default function submitAjaxForm(
         return response.json()
       }
     ).then(json => {
+      const evaluatedResponseContents = formObject.handleAjaxResponse(json)
       if (handleResponse) {
-        handleResponse(formId, ...formObject.handleAjaxResponse(json), json)
+        handleResponse(formId, ...evaluatedResponseContents, json)
       }
 
       dispatch(
-        handleAjaxResponse(formId, ...formObject.handleAjaxResponse(json))
+        handleAjaxResponse(formId, ...evaluatedResponseContents)
       )
+
+      const responseErrors = evaluatedResponseContents[1]
+      if (!responseErrors) dispatch(setFormSaved(formId))
 
       if (afterResponse) afterResponse(json)
     })
