@@ -55,10 +55,11 @@ function assembleAttrsFromServer(seedData, formObjectClass) {
   if (!seedData) { return {} }
 
   // Otherwise assemble main and submodels' fields
-  let attrs = merge({}, seedData.fields)
+  let attrs = merge({}, seedData.fields, seedData.errors)
   for (let submodel of formObjectClass.submodels) {
     if (seedData.fields[submodel]) {
-      attrs[submodel] = seedData.fields[submodel].fields
+      let submodelData = seedData.fields[submodel]
+      attrs[submodel] = merge({}, submodelData.fields, submodelData.errors)
     }
   }
   return attrs
