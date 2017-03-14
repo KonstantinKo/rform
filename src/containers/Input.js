@@ -2,37 +2,33 @@ import { connect } from 'react-redux'
 import isNil from 'lodash/isNil'
 import { getId, getName } from '../utils/modelParams'
 import { optionalTranslation } from '../utils/translations'
+import { navigateThroughSubmodels } from '../utils/stateNavigation'
 import updateAction from '../actions/updateAction'
 import Input from '../components/Input'
 
 const mapStateToProps = function(state, ownProps) {
-  const formId = ownProps.formId
+  const {
+    formId, model, submodel, submodelIndex, attribute, className, disabled,
+  } = ownProps
 
+  const attrs = state.rform[formId]
+  const path =
+    navigateThroughSubmodels(attrs, submodel, submodelIndex)
   let value = ''
-  const attrs = state.rform[ownProps.formId]
-  if (
-    attrs && ownProps.submodel && attrs[ownProps.submodel] &&
-    !isNil(attrs[ownProps.submodel][ownProps.attribute])
-  ) {
-    value = String(attrs[ownProps.submodel][ownProps.attribute])
-  } else if (attrs && !isNil(attrs[ownProps.attribute])) {
-    value = String(attrs[ownProps.attribute])
-  }
+  if (path && !isNil(path[attribute])) value = String(path[attribute])
 
   const savedValue =
-    (attrs && attrs._savedAttributes && attrs._savedAttributes[ownProps.attribute])
+    (attrs && attrs._savedAttributes && attrs._savedAttributes[attribute])
 
-  const name = getName(ownProps.model, ownProps.submodel, ownProps.attribute)
-  const inputId =
-    getId(formId, ownProps.model, ownProps.submodel, ownProps.attribute)
+  const name = getName(model, submodel, attribute, !!submodelIndex)
+  const inputId = getId(formId, model, submodel, attribute, submodelIndex)
 
   const placeholder = ownProps.placeholder || optionalTranslation(
-    'rform', ownProps.model, ownProps.submodel, ownProps.attribute,
-    'placeholder'
+    'rform', model, submodel, attribute, 'placeholder'
   )
 
   const combinedClassName =
-    [`input-${ownProps.attribute}`, ownProps.className].join(' ')
+    [`input-${attribute}`, className].join(' ')
 
   return {
     value,
@@ -41,7 +37,7 @@ const mapStateToProps = function(state, ownProps) {
     inputId,
     placeholder,
     combinedClassName,
-    disabled: (ownProps.disabled === undefined) ? false : ownProps.disabled,
+    disabled: (disabled === undefined) ? false : disabled,
     formState: attrs,
   }
 }
@@ -55,13 +51,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     const { attribute, formObjectClass, submodel, formId } = ownProps
     const { formState } = stateProps
 
-    const formObject = new formObjectClass(stateProps.formState)
+    const formObject = new formObjectClass(formState)
     formObject.validate(attribute)
     const errorKey = formObject.errorKey(attribute, submodel)
     const errors = formObject.attributes.errors[errorKey]
 
     if (!errors && (!formState.errors || !formState.errors[errorKey])) return
-    dispatchProps.dispatch(updateAction(formId, errorKey, 'errors', errors))
+    dispatchProps.dispatch(updateAction(formId, errorKey, 'errors', null, errors))
   }
 
   return {
@@ -70,13 +66,15 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
 
     onChange(event) {
-      const { formId, attribute, submodel } = ownProps
+      const { formId, attribute, submodel, submodelIndex } = ownProps
       const { savedValue } = stateProps
       const newValue = event.target.value
       const changed = (newValue != savedValue)
 
       dispatchProps.dispatch(
-        updateAction(formId, attribute, submodel, newValue, changed)
+        updateAction(
+          formId, attribute, submodel, submodelIndex, newValue, changed
+        )
       )
 
       if (ownProps.submitOnChange) {

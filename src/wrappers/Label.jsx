@@ -16,6 +16,6 @@ export default class LabelWrapper extends Component {
   }
 
   render() {
-    return <Label {...this.props} {...this.context} />
+    return <Label {...this.context} {...this.props} />
   }
 }

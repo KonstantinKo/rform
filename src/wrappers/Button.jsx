@@ -7,6 +7,6 @@ export default class ButtonWrapper extends Component {
   }
 
   render() {
-    return <Button {...this.props} {...this.context} />
+    return <Button {...this.context} {...this.props} />
   }
 }

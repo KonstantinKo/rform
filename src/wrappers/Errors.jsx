@@ -11,6 +11,6 @@ export default class ErrorsWrapper extends Component {
   }
 
   render() {
-    return <Errors {...this.props} {...this.context} />
+    return <Errors {...this.context} {...this.props} />
   }
 }

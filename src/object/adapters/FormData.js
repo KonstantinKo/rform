@@ -60,11 +60,11 @@ export default class FormDataAdapter extends BaseAdapter {
   }
 
   _addSubmodelPropsToFormData(formData) {
-    const { model, submodelProperties, attrs } = this
+    const { model, submodelConfig, attrs } = this
 
-    if (submodelProperties) {
-      for (let submodel in submodelProperties) {
-        for (let property of submodelProperties[submodel]) {
+    if (submodelConfig) {
+      for (let submodel in submodelConfig) {
+        for (let property of submodelConfig[submodel]) {
           this._setFormDataValue(
             formData,
             `${model}[${submodel}][${property}]`,

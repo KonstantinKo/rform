@@ -1,6 +1,7 @@
 import assign from 'lodash/assign'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
+import { navigateThroughSubmodels } from '../utils/stateNavigation'
 
 const INTERNAL_KEYS = ['_savedAttributes', '_changes', 'errors']
 
@@ -31,18 +32,18 @@ export default function reducer(state = initialState, action) {
     return newState
 
   case 'UPDATE_FORM_ATTRIBUTE':
-    let formBasePath = newState[action.formId]
-    if (action.submodel) {
-      if (!formBasePath[action.submodel]) formBasePath[action.submodel] = {}
-      formBasePath[action.submodel][action.attribute] = action.value
-    } else {
-      formBasePath[action.attribute] = action.value
-    }
+    const { attribute, formId, submodel, submodelIndex, changed } = action
+    let formBasePath = newState[formId]
+    const submodelBasePath =
+      navigateThroughSubmodels(formBasePath, submodel, submodelIndex, true)
+    submodelBasePath[action.attribute] = action.value
 
-    if (action.changed === true && !formBasePath._changes.includes(action.attribute))
-      formBasePath._changes.push(action.attribute)
-    if (action.changed === false && formBasePath._changes.includes(action.attribute))
-      formBasePath._changes.pop(action.attribute)
+    const changesBasePath = navigateThroughSubmodels(
+      formBasePath._changes, submodel, submodelIndex, true, [])
+    if (changed === true && !changesBasePath.includes(attribute))
+      changesBasePath.push(attribute)
+    if (changed === false && changesBasePath.includes(attribute))
+      changesBasePath.pop(attribute)
 
     return newState
 

@@ -1,4 +1,5 @@
 import merge from 'lodash/merge'
+import forIn from 'lodash/forIn'
 import BaseAdapter from './Base'
 
 export default class JsonApiAdapter extends BaseAdapter {
@@ -38,7 +39,7 @@ export default class JsonApiAdapter extends BaseAdapter {
   get _json() {
     let jsonObject = { data: { attributes: {} } }
     this._addModelPropsToJson(jsonObject)
-    // this._addSubmodelPropsToJson(jsonObject)
+    this._addSubmodelPropsToJson(jsonObject)
     return jsonObject
   }
 
@@ -53,18 +54,33 @@ export default class JsonApiAdapter extends BaseAdapter {
     }
   }
 
-  // TODO: Implement. Specs don't really talk about create/upd. of submodels...
-  // _addSubmodelPropsToJson(json) {
-  //   const { model, submodelProperties, attrs } = this
-  //
-  //   if (submodelProperties) {
-  //     for (let submodel in submodelProperties) {
-  //       for (let property of submodelProperties[submodel]) {
-  //         let path = json.data.relationships[submodel]
-  //         path = path || { data: { type: submodel, id: null, attributes: {} } }
-  //         path.data.attributes = attrs[submodel][property]
-  //       }
-  //     }
-  //   }
-  // }
+  // JSONAPI specs don't really talk about create/update of submodels...
+  _addSubmodelPropsToJson(json) {
+    const { model, submodelConfig, attrs } = this
+
+    if (submodelConfig) {
+      json.included = []
+      forIn(submodelConfig, (config, submodel) => {
+        if (config.type == 'oneToOne') {
+          json.included.push(this._createInclusion(
+            attrs[submodel], config.properties, submodel
+          ))
+        } else {
+          forIn(attrs[submodel], (subset, index) => {
+            json.included.push(this._createInclusion(
+              subset, config.properties, submodel
+            ))
+          })
+        }
+      })
+    }
+  }
+
+  _createInclusion(attrs, allowedProperties, submodel) {
+    let newElement = { type: submodel, id: null, attributes: {} } // TODO: id for update?
+    for (let property of allowedProperties) {
+      newElement.attributes[property] = attrs[property]
+    }
+    return newElement
+  }
 }

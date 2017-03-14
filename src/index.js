@@ -14,6 +14,7 @@ import JsonApiAdapter from './object/adapters/JsonApi'
 
 import updateAction from './actions/updateAction'
 import { getId, getName } from './utils/modelParams'
+import { navigateThroughSubmodels } from './utils/stateNavigation'
 
 export {
   reducer,
@@ -31,4 +32,5 @@ export {
   updateAction,
   getId,
   getName,
+  navigateThroughSubmodels,
 }

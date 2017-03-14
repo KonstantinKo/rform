@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     const formId = ownProps.formId
 
     return dispatch(
-      updateAction(formId, 'commit', null, ownProps.commit)
+      updateAction(formId, 'commit', null, null, ownProps.commit)
     )
   }
 })

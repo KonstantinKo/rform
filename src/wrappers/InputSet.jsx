@@ -8,6 +8,6 @@ export default class InputSetWrapper extends Component {
   }
 
   render() {
-    return <InputSet {...this.props} {...this.context} />
+    return <InputSet {...this.context} {...this.props} />
   }
 }

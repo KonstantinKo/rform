@@ -35,7 +35,7 @@ export default class InputSet extends Component {
     } = this.props
 
     if (ariaLabelOnly) {
-      return (
+      return(
         <div className={combinedWrapperClassName}>
           <Input {...this.props} ariaLabel={labelText} />
 

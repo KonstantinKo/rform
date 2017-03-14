@@ -6,17 +6,20 @@ export default class FormObject {
   constructor(initialData = {}) {
     this.id = initialData.id
 
-    const { submodelProperties, properties } = this.constructor
+    const { submodels, submodelConfig, properties } = this.constructor
     this.attributes = { errors: {} }
 
     for (let property of properties) {
       this.attributes[property] = null
     }
 
-    for (let submodel in submodelProperties) {
+    for (let submodel of submodels) {
       this.attributes[submodel] = {}
-      for (let property of submodelProperties[submodel]) {
-        this.attributes[submodel][property] = null
+      let config = this._submodelConfig(submodel)
+      if (config.type == 'oneToOne') {
+        for (let property of config.properties) {
+          this.attributes[submodel][property] = null
+        }
       }
     }
 
@@ -26,11 +29,22 @@ export default class FormObject {
       }
     }
 
-    for (let submodel in submodelProperties) {
+    for (let submodel of submodels) {
+      let config = this._submodelConfig(submodel)
+
       if (initialData.hasOwnProperty(submodel)) {
-        for (let field in initialData[submodel]) {
-          if (submodelProperties[submodel].includes(field)) {
-            this.attributes[submodel][field] = initialData[submodel][field]
+        for (let fieldOrIndex in initialData[submodel]) {
+          if (fieldOrIndex.match(/^\d+$/)) { // is index, consists of number(s)
+            this.attributes[submodel][fieldOrIndex] = {}
+            for (let field in initialData[submodel][fieldOrIndex]) {
+              if (config.properties.includes(field)) {
+                this.attributes[submodel][fieldOrIndex][field] =
+                  initialData[submodel][fieldOrIndex][field]
+              }
+            }
+          } else if (config.includes(fieldOrIndex)) {
+            this.attributes[submodel][fieldOrIndex] =
+              initialData[submodel][fieldOrIndex]
           }
         }
       }
@@ -51,7 +65,7 @@ export default class FormObject {
     return []
   }
 
-  static get submodelProperties() {
+  static get submodelConfig() {
     return {}
   }
 
@@ -81,6 +95,13 @@ export default class FormObject {
 
   handleAjaxResponse(json) {
     return this.adapter().handleAjaxResponse(json)
+  }
+
+  _submodelConfig(submodel) {
+    const config = this.constructor.submodelConfig &&
+      this.constructor.submodelConfig[submodel]
+    if (!config) throw new Error(`No configs given for submodel "${submodel}"`)
+    return config
   }
 }
 
