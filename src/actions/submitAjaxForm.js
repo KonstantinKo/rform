@@ -2,20 +2,20 @@ import setFormSaved from './setFormSaved'
 
 const submitAjaxFormRequest = function(formId) {
   return {
-    type: 'SUBMIT_AJAX_FORM_REQUEST',
+    type: '_RFORM_SUBMIT_AJAX_FORM_REQUEST',
     formId
   }
 }
 
 const submitAjaxFormReturn = function(formId) {
   return {
-    type: 'SUBMIT_AJAX_FORM_RETURN',
+    type: '_RFORM_SUBMIT_AJAX_FORM_RETURN',
     formId
   }
 }
 
 const handleAjaxResponse = (formId, _changes, errors, _meta) => ({
-  type: 'HANDLE_AJAX_RESPONSE',
+  type: '_RFORM_HANDLE_AJAX_RESPONSE',
   formId,
   errors,
 })
@@ -35,7 +35,7 @@ export default function submitAjaxForm(
         const { status, statusText } = response
         dispatch(submitAjaxFormReturn(formId))
         if (status >= 400) {
-          throw new Error(`Submit Ajax Form Error ${status}: ${statusText}`)
+          console.error(`Submit Ajax Form Error ${status}: ${statusText}`)
         }
         return response.json()
       }

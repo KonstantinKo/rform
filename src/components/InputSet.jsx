@@ -19,7 +19,7 @@ export default class InputSet extends Component {
   //   // inlineLabel: PropTypes.bool,
   //   // submodel: PropTypes.string,
   //
-  //   id: PropTypes.string.isRequired,
+  //   formId: PropTypes.string.isRequired,
   //   errors: PropTypes.array,
   //   className: PropTypes.string,
   //   combinedWrapperClassName: PropTypes.string.isRequired,
@@ -30,7 +30,7 @@ export default class InputSet extends Component {
 
   render() {
     const {
-      errors, combinedWrapperClassName, labelAfterInput, labelText, id,
+      errors, combinedWrapperClassName, labelAfterInput, labelText, formId,
       ariaLabelOnly, attribute, labelClassName, errorClassName
     } = this.props
 
@@ -39,7 +39,10 @@ export default class InputSet extends Component {
         <div className={combinedWrapperClassName}>
           <Input {...this.props} ariaLabel={labelText} />
 
-          <Errors className={errorClassName} attribute={attribute} errors={errors} />
+          <Errors
+            className={errorClassName} attribute={attribute} errors={errors}
+            formId={formId}
+          />
         </div>
       )
     }
@@ -48,20 +51,32 @@ export default class InputSet extends Component {
         <div className={combinedWrapperClassName}>
           <Input {...this.props} />
 
-          <Label className={labelClassName} attribute={attribute} content={labelText}/>
+          <Label
+            className={labelClassName} attribute={attribute}
+            content={labelText} formId={formId}
+          />
 
-          <Errors className={errorClassName} attribute={attribute} errors={errors} />
+          <Errors
+            className={errorClassName} attribute={attribute} errors={errors}
+            formId={formId}
+          />
         </div>
       )
     }
     else {
       return (
         <div className={combinedWrapperClassName}>
-          <Label className={labelClassName} attribute={attribute} content={labelText}/>
+          <Label
+            className={labelClassName} attribute={attribute}
+            content={labelText} formId={formId}
+          />
 
           <Input {...this.props} />
 
-          <Errors className={errorClassName} attribute={attribute} errors={errors} />
+          <Errors
+            className={errorClassName} attribute={attribute} errors={errors}
+            formId={formId}
+          />
         </div>
       )
     }

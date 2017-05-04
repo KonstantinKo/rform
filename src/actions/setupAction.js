@@ -1,6 +1,6 @@
 export default function setForm(formId, formData) {
   return {
-    type: 'SET_FORM',
+    type: '_RFORM_SET_FORM',
     formId,
     formData,
   }

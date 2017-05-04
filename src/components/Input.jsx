@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import Default from './inputs/Default'
 import FileField from './inputs/FileField'
 import Textarea from './inputs/Textarea'
-import Select from './inputs/Select'
+import Select from '../containers/inputs/Select'
 import Checkbox from '../containers/inputs/Checkbox'
 
 export default class Input extends Component {
@@ -25,7 +25,7 @@ export default class Input extends Component {
   render() {
     const { type } = this.props
 
-    switch (type) {
+    switch(type) {
     case 'textarea':
       return <Textarea {...this.props} />
 

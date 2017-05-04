@@ -48,7 +48,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// the values we want from the server provided serialized object are nested
+// the values we want from the server-provided serialized object are nested
 // under `fields`. The same is true for included submodels.
 function assembleAttrsFromServer(seedData, formObjectClass) {
   // Early return when there was no serialized object provided by the server
@@ -90,7 +90,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const formObject = new formObjectClass(editedStateObject)
     if (ownProps.requireValid && !validateForm(formObject)) {
       dispatch(
-        updateForm(formId, 'errors', null, formObject.attributes.errors)
+        updateForm(formId, 'errors', null, null, formObject.attributes.errors)
       )
     } else {
       dispatch(

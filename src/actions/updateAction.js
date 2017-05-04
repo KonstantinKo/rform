@@ -1,5 +1,5 @@
 export default (formId, attribute, submodel, submodelIndex, value, changed) => ({
-  type: 'UPDATE_FORM_ATTRIBUTE',
+  type: '_RFORM_UPDATE_FORM_ATTRIBUTE',
   formId,
   attribute,
   submodel,

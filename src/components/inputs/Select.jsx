@@ -12,6 +12,10 @@ export default class Select extends Component {
     ).isRequired,
   }
 
+  componentDidMount() {
+    this.props.saveInitialValue()
+  }
+
   render() {
     const {
       id, name, value, ariaLabel, labelText, onChange, options,

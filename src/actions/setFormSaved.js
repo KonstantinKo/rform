@@ -1,4 +1,4 @@
 export default (formId) => ({
-  type: 'SET_FORM_SAVED',
+  type: '_RFORM_SET_FORM_SAVED',
   formId,
 })

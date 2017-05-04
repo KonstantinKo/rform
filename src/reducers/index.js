@@ -14,13 +14,13 @@ export default function reducer(state = initialState, action) {
   let newState = assign({}, state)
 
   switch (type) {
-  case 'SET_FORM':
+  case '_RFORM_SET_FORM':
     newState[action.formId] = merge(
       action.formData, { _savedAttributes: action.formData, _changes: [] }
     )
     return newState
 
-  case 'SET_FORM_SAVED':
+  case '_RFORM_SET_FORM_SAVED':
     newState[action.formId] = merge(
       state[action.formId], {
         _savedAttributes: pickBy(state[action.formId], (value, key) =>
@@ -31,7 +31,7 @@ export default function reducer(state = initialState, action) {
     newState[action.formId]._changes = []
     return newState
 
-  case 'UPDATE_FORM_ATTRIBUTE':
+  case '_RFORM_UPDATE_FORM_ATTRIBUTE':
     const { attribute, formId, submodel, submodelIndex, changed } = action
     let formBasePath = newState[formId]
     const submodelBasePath =
@@ -47,15 +47,15 @@ export default function reducer(state = initialState, action) {
 
     return newState
 
-  case 'SUBMIT_AJAX_FORM_REQUEST':
+  case '_RFORM_SUBMIT_AJAX_FORM_REQUEST':
     newState.isSubmitting[action.formId] = true
     return newState
 
-  case 'SUBMIT_AJAX_FORM_RETURN':
+  case '_RFORM_SUBMIT_AJAX_FORM_RETURN':
     newState.isSubmitting[action.formId] = false
     return newState
 
-  case 'HANDLE_AJAX_RESPONSE':
+  case '_RFORM_HANDLE_AJAX_RESPONSE':
     let responseChanges = {}
     if (action.errors) {
       responseChanges[action.formId] = state[action.formId]

@@ -27,17 +27,12 @@ const mapStateToProps = function(state, ownProps) {
   if (errors && errors.length) combinedWrapperClassName += ' ' + errorClass
 
   const labelText = label || optionalTranslation(
-      'rform', model, submodel, attribute, 'label'
-    ) || ''
-
-    const id = getId(
-      formId, model, submodel, attribute
-    )
+    'rform', model, submodel, attribute, 'label'
+  ) || ''
 
   return {
     combinedWrapperClassName,
     labelText,
-    id,
     errors,
   }
 }

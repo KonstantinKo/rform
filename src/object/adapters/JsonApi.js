@@ -31,7 +31,17 @@ export default class JsonApiAdapter extends BaseAdapter {
         merge(json.data.attributes, { id: json.data.id })
     }
 
-    return [changes, json.errors, json.meta]
+    let errors = {}
+    if (json.errors) {
+      for (let err of json.errors) {
+        let erroringAttribute =
+          err.source.pointer.replace(/^\/data\/attributes\//, '')
+        errors[erroringAttribute] = errors[erroringAttribute] || []
+        errors[erroringAttribute].push(err.title)
+      }
+    }
+
+    return [changes, errors, json.meta]
   }
 
   // --- Private --- //

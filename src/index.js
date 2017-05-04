@@ -13,6 +13,7 @@ import FormDataAdapter from './object/adapters/FormData'
 import JsonApiAdapter from './object/adapters/JsonApi'
 
 import updateAction from './actions/updateAction'
+import setupAction from './actions/setupAction'
 import { getId, getName } from './utils/modelParams'
 import { navigateThroughSubmodels } from './utils/stateNavigation'
 
@@ -30,6 +31,7 @@ export {
   FormDataAdapter,
   JsonApiAdapter,
   updateAction,
+  setupAction,
   getId,
   getName,
   navigateThroughSubmodels,
