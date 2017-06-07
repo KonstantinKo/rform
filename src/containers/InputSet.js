@@ -7,15 +7,15 @@ import InputSet from '../components/InputSet'
 
 const mapStateToProps = function(state, ownProps) {
   const {
-    attribute, submodel, wrapperClassName, wrapperErrorClassName, label,
-    formId, model, submodelIndex,
+    attribute, submodelPath, wrapperClassName, wrapperErrorClassName, label,
+    formId, model,
   } = ownProps
 
   const formState = state.rform[formId]
-  const errors = getErrors(formState, attribute, submodel, ownProps.errors)
+  const errors = getErrors(formState, attribute, submodelPath, ownProps.errors)
 
   let changeList = formState && navigateThroughSubmodels(
-    formState._changes, submodel, submodelIndex
+    formState._changes, submodelPath
   )
   const changeClass =
     (changeList && changeList.includes(attribute)) ? 'changed' : 'saved'
@@ -27,7 +27,7 @@ const mapStateToProps = function(state, ownProps) {
   if (errors && errors.length) combinedWrapperClassName += ' ' + errorClass
 
   const labelText = label || optionalTranslation(
-    'rform', model, submodel, attribute, 'label'
+    'rform', model, ...submodelPath, attribute, 'label'
   ) || ''
 
   return {

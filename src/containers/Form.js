@@ -7,6 +7,8 @@ import updateForm from '../actions/updateAction'
 import submitAjaxForm from '../actions/submitAjaxForm'
 import defaultFormObject from '../utils/defaultFormObject'
 import { validateForm } from '../utils/validate'
+import updateError from '../actions/updateError'
+import { ERRORCONTAINER } from '../components/Form'
 import Form from '../components/Form'
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
     defaultFormObject(ownProps.model, ownProps.children)
   const formId = ownProps.id || formObjectClass.name
   const editedStateObject = state.rform[formId]
+  const rformState = state.rform
 
   const enctype = ownProps.multipart
     ? 'multipart/form-data'
@@ -36,6 +39,7 @@ const mapStateToProps = (state, ownProps) => {
       ownProps.seedData, formObjectClass
     ),
     editedStateObject,
+    rformState,
     formId,
     commit: (editedStateObject && editedStateObject.commit),
     enctype,
@@ -84,13 +88,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (event.preventDefault) event.preventDefault()
 
     const { dispatch } = dispatchProps
-    const { formObjectClass, formId, editedStateObject } = stateProps
+    const { formObjectClass, formId, rformState } = stateProps
     const { handleResponse, afterResponse } = ownProps
 
-    const formObject = new formObjectClass(editedStateObject)
+    const formObject = new formObjectClass(rformState, formId)
     if (ownProps.requireValid && !validateForm(formObject)) {
       dispatch(
-        updateForm(formId, 'errors', null, null, formObject.attributes.errors)
+        updateError(formId, formObject)
       )
     } else {
       dispatch(

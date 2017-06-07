@@ -1,15 +1,16 @@
 import isNil from 'lodash/isNil'
 
 export function navigateThroughSubmodels(
-  basePath, submodel, submodelIndex, fillEmpty = false, lastFill = {}
+  basePath, submodelPath = [], fillEmpty = false, lastFill = {}
 ) {
-  if (basePath && submodel) {
-    if (!basePath[submodel] && fillEmpty) basePath[submodel] = {}
-    basePath = basePath[submodel]
-    if (basePath && !isNil(submodelIndex)) {
-      if (!basePath[submodelIndex] && fillEmpty)
-        basePath[submodelIndex] = lastFill
-      basePath = basePath[submodelIndex]
+  if (basePath && submodelPath.length) {
+    for (let i = 0; i < submodelPath.length; i++) {
+      let step = submodelPath[i]
+      let isLastStep = i == submodelPath.length - 1
+
+      if (!basePath[step] && fillEmpty)
+        basePath[step] = isLastStep ? lastFill : {}
+      basePath = basePath[step]
     }
   }
 

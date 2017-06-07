@@ -20,7 +20,7 @@ export default class FormDataAdapter extends BaseAdapter {
     return options
   }
 
-  handleAjaxResponse(json) {
+  handleAjaxResponse(json) { // TODO: errors potentially not working anymore, needs { formId => errors }
     const meta = json.meta
 
     switch (json.status) {

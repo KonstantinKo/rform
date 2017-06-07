@@ -5,7 +5,7 @@ export default class InputWrapper extends Component {
   static propTypes = {
     attribute: PropTypes.string.isRequired,
     type: PropTypes.string,
-    submodel: PropTypes.string,
+    submodelPath: PropTypes.array,
     className: PropTypes.string,
   }
 

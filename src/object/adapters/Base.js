@@ -1,10 +1,16 @@
 export default class BaseAdapter {
   constructor(form, formObject) {
     this.form = form
-    this.properties = formObject.constructor.properties
-    this.submodelConfig = formObject.constructor.submodelConfig
-    this.model = formObject.constructor.model
+    this.baseConfig = {
+      model: formObject.constructor.model,
+      submodels: formObject.constructor.submodels,
+      type: formObject.constructor.type,
+      properties: formObject.constructor.properties,
+      submodelConfigs: formObject.constructor.collectedSubmodelConfigs,
+      id: formObject.id,
+    }
     this.attrs = formObject.attributes
-    this.id = formObject.id
+    this.formId = formObject.formId
+    this.rformData = formObject.rformData
   }
 }

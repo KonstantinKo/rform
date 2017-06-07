@@ -1,5 +1,6 @@
 import compact from 'lodash/compact'
 
+// TODO: integer steps might interfere (submodel keys)
 export function optionalTranslation(...pathSteps) {
   if (!global.I18n) return
 

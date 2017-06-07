@@ -1,4 +1,5 @@
 import Validator from './Validator'
+import { errorKey, ERRORCONTAINER } from '../utils/getErrors'
 
 class NonValidator {
   filled() { return true }
@@ -9,8 +10,8 @@ export default class Validation {
     this._resetErrors()
     this.validation()
     return(
-      !this.attributes.errors[property] ||
-      !this.attributes.errors[property].length
+      !this.attributes[ERRORCONTAINER][property] ||
+      !this.attributes[ERRORCONTAINER][property].length
     )
   }
 
@@ -21,7 +22,7 @@ export default class Validation {
   required(property, defaultFilledPredicate = true) {
     return new Validator(
       property, this.attributes, this._currentSubmodel,
-      this.errorKey(property, this._currentSubmodel),
+      errorKey(property, [this._currentSubmodel]), // !
       defaultFilledPredicate,
       this._configurations,
     )
@@ -43,16 +44,8 @@ export default class Validation {
     callback.bind(this)()
   }
 
-  errorKey(property, submodel) {
-    if (submodel) {
-      return `${submodel}.${property}`
-    } else {
-      return property
-    }
-  }
-
   _resetErrors() {
-    this.attributes.errors = {}
+    this.attributes[this.ERRORCONTAINER] = {}
     this._currentSubmodel = null
   }
 }

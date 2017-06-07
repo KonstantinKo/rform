@@ -28,11 +28,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   onChange(event) {
     const { checkedValue, uncheckedValue } = stateProps
-    const { formId, attribute, submodel, submodelIndex } = ownProps
+    const { formId, attribute, submodelPath } = ownProps
 
     dispatchProps.dispatch(
       updateAction(
-        formId, attribute, submodel, submodelIndex,
+        formId, attribute, submodelPath,
         event.target.checked ? checkedValue : uncheckedValue
       )
     )

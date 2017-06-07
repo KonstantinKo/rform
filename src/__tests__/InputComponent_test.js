@@ -76,16 +76,16 @@ describe('InputComponent', function() {
     })
   })
 
-  describe('with a submodel', function() {
-    it('should output a label containing that submodel', function() {
-      const wrapper = mount(<InputComponent submodel="testSubmodel" {...defaultProps} />)
+  describe('with a submodelPath', function() {
+    it('should output a label containing that submodelPath', function() {
+      const wrapper = mount(<InputComponent submodelPath={["testSubmodel"]} {...defaultProps} />)
 
       const label = wrapper.find('label')
       label.node.htmlFor.should.equal('testModel_testSubmodel_testAttribute')
     })
 
-    it('should output an input tag with that submodel', function() {
-      const wrapper = mount(<InputComponent submodel="testSubmodel" {...defaultProps} />)
+    it('should output an input tag with that submodelPath', function() {
+      const wrapper = mount(<InputComponent submodelPath={["testSubmodel"]} {...defaultProps} />)
 
       const input = wrapper.find('input')
       input.node.id.should.equal('testModel_testSubmodel_testAttribute')

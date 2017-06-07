@@ -14,10 +14,9 @@ const submitAjaxFormReturn = function(formId) {
   }
 }
 
-const handleAjaxResponse = (formId, _changes, errors, _meta) => ({
+const handleAjaxResponse = (_changes, formErrorHash, _meta) => ({
   type: '_RFORM_HANDLE_AJAX_RESPONSE',
-  formId,
-  errors,
+  formErrorHash,
 })
 
 export default function submitAjaxForm(
@@ -42,11 +41,12 @@ export default function submitAjaxForm(
     ).then(json => {
       const evaluatedResponseContents = formObject.handleAjaxResponse(json)
       if (handleResponse) {
+        // TODO: Do we still need both handleResponse AND afterResponse?
         handleResponse(formId, ...evaluatedResponseContents, json)
       }
 
       dispatch(
-        handleAjaxResponse(formId, ...evaluatedResponseContents)
+        handleAjaxResponse(...evaluatedResponseContents)
       )
 
       const responseErrors = evaluatedResponseContents[1]

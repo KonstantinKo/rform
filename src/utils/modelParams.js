@@ -1,23 +1,21 @@
-export function getName(model, submodel, attribute, multipleSubmodels) {
-  if (submodel) {
-    if (multipleSubmodels) {
-      return `${model}[${submodel}][][${attribute}]`
-    } else {
-      return `${model}[${submodel}][${attribute}]`
-    }
+export function getName(
+  model, attribute, multipleSubmodels, submodelPath = []
+) {
+  let name = model
+  for (let step of submodelPath) {
+    name += `[${step}]`
+  }
+  if (multipleSubmodels) {
+    return `${name}[][${attribute}]` // TODO: Does this even work in rails?
   } else {
-    return `${model}[${attribute}]`
+    return `${name}[${attribute}]`
   }
 }
 
-export function getId(formId, model, submodel, attribute, submodelIndex) {
-  if (submodel) {
-    if (submodelIndex) {
-      return `${formId}_${model}_${submodel}_${submodelIndex}_${attribute}`
-    } else {
-      return `${formId}_${model}_${submodel}_${attribute}`
-    }
-  } else {
-    return `${formId}_${model}_${attribute}`
+export function getId(formId, model, attribute, submodelPath = []) {
+  let id = `${formId}_${model}_`
+  for (let step of submodelPath) {
+    id += `${step}_`
   }
+  return `${id}_${attribute}`
 }

@@ -3,28 +3,32 @@ import isNil from 'lodash/isNil'
 import { getId, getName } from '../utils/modelParams'
 import { optionalTranslation } from '../utils/translations'
 import { navigateThroughSubmodels } from '../utils/stateNavigation'
+import { ERRORCONTAINER, errorKey } from '../utils/getErrors'
+import updateError from '../actions/updateError'
 import updateAction from '../actions/updateAction'
 import Input from '../components/Input'
 
 const mapStateToProps = function(state, ownProps) {
   const {
-    formId, model, submodel, submodelIndex, attribute, className, disabled,
+    formId, model, attribute, className, disabled,
   } = ownProps
 
-  const attrs = state.rform[formId]
-  const path =
-    navigateThroughSubmodels(attrs, submodel, submodelIndex)
+  let submodelPath = ownProps.submodelPath || []
+
+  const rformState = state.rform
+  const attrs = rformState[formId]
+  const path = navigateThroughSubmodels(attrs, submodelPath)
   let value = ''
   if (path && !isNil(path[attribute])) value = String(path[attribute])
 
   const savedValue =
     (attrs && attrs._savedAttributes && attrs._savedAttributes[attribute])
 
-  const name = getName(model, submodel, attribute, !!submodelIndex)
-  const inputId = getId(formId, model, submodel, attribute, submodelIndex)
+  const name = getName(model, attribute, submodelPath)
+  const inputId = getId(formId, model, attribute, submodelPath)
 
   const placeholder = ownProps.placeholder || optionalTranslation(
-    'rform', model, submodel, attribute, 'placeholder'
+    'rform', model, ...submodelPath, attribute, 'placeholder'
   )
 
   const combinedClassName =
@@ -39,6 +43,7 @@ const mapStateToProps = function(state, ownProps) {
     combinedClassName,
     disabled: (disabled === undefined) ? false : disabled,
     formState: attrs,
+    rformState,
   }
 }
 
@@ -48,16 +53,16 @@ const mapDispatchToProps = dispatch => ({
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const validate = function() {
-    const { attribute, formObjectClass, submodel, formId } = ownProps
-    const { formState } = stateProps
+    const { attribute, formObjectClass, submodelPath, formId } = ownProps
+    const { formState, rformState } = stateProps
 
-    const formObject = new formObjectClass(formState)
+    const formObject = new formObjectClass(rformState, formId)
     formObject.validate(attribute)
-    const errorKey = formObject.errorKey(attribute, submodel)
-    const errors = formObject.attributes.errors[errorKey]
+    const errKey = errorKey(attribute, submodelPath)
+    const errors = formObject.attributes[ERRORCONTAINER]
 
-    if (!errors && (!formState.errors || !formState.errors[errorKey])) return
-    dispatchProps.dispatch(updateAction(formId, errorKey, 'errors', null, errors))
+    if (!errors && (!formState.errors || !formState.errors[errKey])) return
+    dispatchProps.dispatch(updateError(formId, formObject, errKey))
   }
 
   return {
@@ -66,14 +71,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
 
     onChange(event) {
-      const { formId, attribute, submodel, submodelIndex } = ownProps
+      const { formId, attribute, submodelPath } = ownProps
       const { savedValue } = stateProps
       const newValue = event.target.value
       const changed = (newValue != savedValue)
 
       dispatchProps.dispatch(
         updateAction(
-          formId, attribute, submodel, submodelIndex, newValue, changed
+          formId, attribute, submodelPath, newValue, changed
         )
       )
 

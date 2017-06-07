@@ -1,53 +1,65 @@
 import FormDataAdapter from './adapters/FormData'
 import Validation from './Validation'
 import mixin from '../utils/mixin'
+import { ERRORCONTAINER } from '../utils/getErrors'
 
 export default class FormObject {
-  constructor(initialData = {}) {
+
+  constructor(rformData, formId) {
+    this.formId = formId
+    this.rformData = rformData
+
+    const initialData = rformData[formId] || {}
     this.id = initialData.id
 
     const { submodels, submodelConfig, properties } = this.constructor
-    this.attributes = { errors: {} }
+    this.attributes = {}
+    this.attributes[ERRORCONTAINER] = {}
 
     for (let property of properties) {
       this.attributes[property] = null
     }
 
-    for (let submodel of submodels) {
-      this.attributes[submodel] = {}
-      let config = this._submodelConfig(submodel)
-      if (config.type == 'oneToOne') {
-        for (let property of config.properties) {
-          this.attributes[submodel][property] = null
-        }
-      }
+    // initialize empty submodel properties
+    for (let initialSubmodel of submodels) {
+      this.attributes[initialSubmodel] = []
+      // let initialConfig = this._submodelConfig(initialSubmodel)
+      // if (initialConfig.relationship == 'oneToOne') {
+      //   for (let property of initialConfig.properties) {
+      //     this.attributes[initialSubmodel][property] = null
+      //   }
+      // }
     }
 
+    // transfer own properties
     for (let field of Object.keys(initialData)) {
       if (properties.includes(field)) {
         this.attributes[field] = initialData[field]
       }
     }
 
+    // transfer submodel properties
     for (let submodel of submodels) {
-      let config = this._submodelConfig(submodel)
+      let config = this.constructor._submodelConfig(submodel)
 
-      if (initialData.hasOwnProperty(submodel)) {
-        for (let fieldOrIndex in initialData[submodel]) {
-          if (fieldOrIndex.match(/^\d+$/)) { // is index, consists of number(s)
-            this.attributes[submodel][fieldOrIndex] = {}
-            for (let field in initialData[submodel][fieldOrIndex]) {
-              if (config.properties.includes(field)) {
-                this.attributes[submodel][fieldOrIndex][field] =
-                  initialData[submodel][fieldOrIndex][field]
-              }
-            }
-          } else if (config.includes(fieldOrIndex)) {
-            this.attributes[submodel][fieldOrIndex] =
-              initialData[submodel][fieldOrIndex]
-          }
-        }
-      }
+      const submodelDataSets =
+        this._collectSubmodelDataSets(submodel, rformData, initialData, config)
+      this.attributes[submodel] = submodelDataSets
+
+      // for (let fieldOrIndex of initialData[submodel]) { // each submodel prop
+      //   if (fieldOrIndex.match(/^\d+$/)) { // is index, consists of number(s)
+      //     this.attributes[submodel][fieldOrIndex] = {}
+      //     for (let field in initialData[submodel][fieldOrIndex]) {
+      //       if (config.properties.includes(field)) {
+      //         this.attributes[submodel][fieldOrIndex][field] =
+      //           initialData[submodel][fieldOrIndex][field]
+      //       }
+      //     }
+      //   } else if (config.properties.includes(fieldOrIndex)) { // is non-number
+      //     this.attributes[submodel][fieldOrIndex] =
+      //       initialData[submodel][fieldOrIndex]
+      //   }
+      // }
     }
   }
 
@@ -81,6 +93,7 @@ export default class FormObject {
   get attributes() {
     return this._attributes
   }
+
   set attributes(attributes) {
     this._attributes = attributes
   }
@@ -97,11 +110,43 @@ export default class FormObject {
     return this.adapter().handleAjaxResponse(json)
   }
 
-  _submodelConfig(submodel) {
-    const config = this.constructor.submodelConfig &&
-      this.constructor.submodelConfig[submodel]
+  static _submodelConfig(submodel) {
+    const config = this.submodelConfig && this.submodelConfig[submodel]
     if (!config) throw new Error(`No configs given for submodel "${submodel}"`)
+    if (config.object) {
+      config.properties = config.object.properties
+      config.type = config.object.type
+      config.submodels = config.object.submodels
+      config.submodelConfigs = config.object.collectedSubmodelConfigs
+    }
     return config
+  }
+
+  static get collectedSubmodelConfigs() {
+    let configs = {}
+    for (let submodel of this.submodels)
+      configs[submodel] = this._submodelConfig(submodel)
+    return configs
+  }
+
+  _collectSubmodelDataSets(submodel, rformData, initialData, config) {
+    let dataSets = []
+
+    if (
+      initialData._registeredSubmodelForms &&
+        initialData._registeredSubmodelForms[submodel]
+    ) {
+      // form uses external form as submodel form
+      for (let subFormId of initialData._registeredSubmodelForms[submodel]) {
+        dataSets.push(new config.object(rformData, subFormId).attributes)
+      }
+    }
+
+    if (initialData.hasOwnProperty(submodel)) {
+      // form has internal nested submodels
+      dataSets.push(...initialData[submodel])
+    }
+    return dataSets
   }
 }
 

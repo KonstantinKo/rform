@@ -49,7 +49,7 @@ export default class Form extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.ensureStateObjectExistence()
     if (this.props.immediateSubmit) this.props.onSubmit({ target: this._form })
   }

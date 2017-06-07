@@ -19,12 +19,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   // saved to the state
   saveInitialValue() {
     const {
-      formId, attribute, submodel, submodelIndex, value, options
+      formId, attribute, submodelPath, value, options
     } = ownProps
     const initialValue = value || (options[0] && options[0].value)
 
     dispatchProps.dispatch(
-      updateAction(formId, attribute, submodel, submodelIndex, initialValue)
+      updateAction(formId, attribute, submodelPath, initialValue)
     )
   }
 })

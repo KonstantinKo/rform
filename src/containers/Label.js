@@ -6,10 +6,13 @@ import Label from '../components/Label'
 const mapStateToProps = function(state, ownProps) {
   return {
     htmlFor:
-      ownProps.htmlFor ||
-      getId(ownProps.formId, ownProps.model, ownProps.submodel, ownProps.attribute),
+      ownProps.htmlFor || getId(
+        ownProps.formId, ownProps.model, ownProps.attribute,
+        ownProps.submodelPath
+      ),
       content: ownProps.content || ownProps.children || optionalTranslation(
-        'rform', ownProps.model, ownProps.submodel, ownProps.attribute, 'label'
+        'rform', ownProps.model, ...ownProps.submodelPath, ownProps.attribute,
+        'label'
       ) || ''
   }
 }

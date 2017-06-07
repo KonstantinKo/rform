@@ -17,8 +17,8 @@ describe('<Label />', function() {
     label.node.htmlFor.should.equal('testModel_testAttribute')
   })
 
-  it('should output a label containing the submodel if submodel is present', function() {
-    const wrapper = mount(<Label submodel="testSubmodel" {...defaultProps} />)
+  it('should output a label containing the submodelPath if submodelPath is present', function() {
+    const wrapper = mount(<Label submodelPath={["testSubmodel"]} {...defaultProps} />)
 
     const label = wrapper.find('label')
     label.node.htmlFor.should.equal('testModel_testSubmodel_testAttribute')

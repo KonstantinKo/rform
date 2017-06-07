@@ -6,7 +6,7 @@ const mapStateToProps = function(state, ownProps) {
   let allErrors = ownProps.errors
   if (!allErrors || !allErrors.length) {
     allErrors = getErrors(
-      state.rform[ownProps.formId], ownProps.attribute, ownProps.submodel,
+      state.rform[ownProps.formId], ownProps.attribute, ownProps.submodelPath,
       ownProps.errors
     )
   }

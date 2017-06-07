@@ -4,6 +4,7 @@ import compact from 'lodash/compact'
 import cloneDeep from 'lodash/cloneDeep'
 import predicates from './predicates'
 import { optionalTranslation } from '../utils/translations'
+import { ERRORCONTAINER } from '../utils/getErrors'
 
 export default class Validator {
   constructor(property, attrs, submodel, errorKey, defaultFilledPredicate, configurations = {}) {
@@ -32,7 +33,7 @@ export default class Validator {
       }
     }
 
-    this._errors = uniqBy(compact(errors))
+    return this.setErrors(uniqBy(compact(errors)))
   }
 
   _checkPredicate(errors, predicate, option = null) {
@@ -71,8 +72,9 @@ export default class Validator {
     }
   }
 
-  set _errors(errors) {
-    this.attrs.errors[this.errorKey] = errors
+  setErrors(errors) {
+    this.attrs[ERRORCONTAINER][this.errorKey] = errors
+    return errors
   }
 }
 

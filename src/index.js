@@ -14,6 +14,8 @@ import JsonApiAdapter from './object/adapters/JsonApi'
 
 import updateAction from './actions/updateAction'
 import setupAction from './actions/setupAction'
+import registerSubmodelForm from './actions/registerSubmodelForm'
+import unregisterSubmodelForm from './actions/unregisterSubmodelForm'
 import { getId, getName } from './utils/modelParams'
 import { navigateThroughSubmodels } from './utils/stateNavigation'
 
@@ -32,6 +34,8 @@ export {
   JsonApiAdapter,
   updateAction,
   setupAction,
+  registerSubmodelForm,
+  unregisterSubmodelForm,
   getId,
   getName,
   navigateThroughSubmodels,

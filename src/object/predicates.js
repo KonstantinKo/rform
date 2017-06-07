@@ -22,6 +22,9 @@ export default {
     check: (validatable, option) => validatable == option,
     translationOptions: option => ({ num: option }),
   },
+  'format?': {
+    check: (validatable, regex) => regex.test(validatable),
+  },
   'size?': {
     check: (validatable, range) =>
       validatable.length > range[0] && validatable.length < range[1],
