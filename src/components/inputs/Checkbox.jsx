@@ -1,6 +1,10 @@
 import React, { PropTypes, Component } from 'react'
 
 export default class Checkbox extends Component {
+  componentDidMount() {
+    this.props.saveInitialValue()
+  }
+
   render() {
     const {
       id, name, ariaLabel, labelText, onChange, combinedClassName,

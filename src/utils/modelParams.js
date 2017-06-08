@@ -13,6 +13,11 @@ export function getName(
 }
 
 export function getId(formId, model, attribute, submodelPath = []) {
+  if (!formId)
+    throw `#getId needs a formId (model: ${model}, attribute: ${attribute})`
+  if (!model)
+    throw `#getId needs a model (formId: ${formId}, attribute: ${attribute})`
+
   let id = `${formId}_${model}_`
   for (let step of submodelPath) {
     id += `${step}_`
