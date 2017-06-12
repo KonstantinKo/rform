@@ -10,6 +10,7 @@ export default class FormObject {
     this.rformData = rformData
 
     const initialData = rformData[formId] || {}
+    this.initialData = initialData
     this.id = initialData.id
 
     const { submodels, submodelConfig, properties } = this.constructor
@@ -129,17 +130,34 @@ export default class FormObject {
     return configs
   }
 
+  get submodelFormObjects() {
+    let objects = {}
+
+    for (let submodel of this.constructor.submodels) {
+      let config = this.constructor._submodelConfig(submodel)
+      for (
+        let formId of this._registeredSubFormsFor(submodel, this.initialData)
+      ) {
+        objects[formId] = new config.object(this.rformData, formId)
+      }
+    }
+
+    return objects
+  }
+
+  _registeredSubFormsFor(submodel, initialData) {
+    return(
+      (initialData._registeredSubmodelForms &&
+        initialData._registeredSubmodelForms[submodel]) || []
+    )
+  }
+
   _collectSubmodelDataSets(submodel, rformData, initialData, config) {
     let dataSets = []
 
-    if (
-      initialData._registeredSubmodelForms &&
-        initialData._registeredSubmodelForms[submodel]
-    ) {
-      // form uses external form as submodel form
-      for (let subFormId of initialData._registeredSubmodelForms[submodel]) {
-        dataSets.push(new config.object(rformData, subFormId).attributes)
-      }
+    // form uses external form as submodel form
+    for (let formId of this._registeredSubFormsFor(submodel, initialData)) {
+      dataSets.push(new config.object(rformData, formId).attributes)
     }
 
     if (initialData.hasOwnProperty(submodel)) {

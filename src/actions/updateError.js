@@ -1,6 +1,6 @@
-export default (formId, formObject, onlyKey = null) => ({
+export default (formId, errors, onlyKey = null) => ({
   type: '_RFORM_UPDATE_ERROR',
   formId,
-  formObject,
+  errors,
   onlyKey,
 })

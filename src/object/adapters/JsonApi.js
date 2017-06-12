@@ -116,8 +116,15 @@ export default class JsonApiAdapter extends BaseAdapter {
           const relationName = result[1]
           const optionalIndex = result[2] || 0
 
-          if (rformData[errorFormId]._registeredSubmodelForms && rformData[errorFormId]._registeredSubmodelForms[relationName] && rformData[errorFormId]._registeredSubmodelForms[relationName][optionalIndex]) {
-            errorFormId = rformData[errorFormId]._registeredSubmodelForms[relationName][optionalIndex]
+          if (
+            rformData[errorFormId]._registeredSubmodelForms &&
+            rformData[errorFormId]._registeredSubmodelForms[relationName] &&
+            rformData[errorFormId]
+              ._registeredSubmodelForms[relationName][optionalIndex]
+          ) {
+            errorFormId =
+              rformData[errorFormId]
+                ._registeredSubmodelForms[relationName][optionalIndex]
           }
 
           // TODO: handle unregistered submodel - maybe use following as `else`

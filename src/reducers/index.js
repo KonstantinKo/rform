@@ -51,14 +51,13 @@ export default function reducer(state = initialState, action) {
     return newState
 
   case '_RFORM_UPDATE_ERROR':
-    let errors = action.formObject.attributes[ERRORCONTAINER]
     if (action.onlyKey) {
       newState[action.formId][ERRORCONTAINER] =
         newState[action.formId][ERRORCONTAINER] || {}
       newState[action.formId][ERRORCONTAINER][action.onlyKey] =
-        errors[action.onlyKey]
+        action.errors[action.onlyKey]
     } else {
-      newState[action.formId][ERRORCONTAINER] = errors
+      newState[action.formId][ERRORCONTAINER] = action.errors
     }
     return newState
 
@@ -75,7 +74,7 @@ export default function reducer(state = initialState, action) {
     if (action.formErrorHash) {
       forIn(action.formErrorHash, (errors, formId) => {
         responseChanges[formId] = state[formId]
-        responseChanges[formId].errors = errors
+        responseChanges[formId][ERRORCONTAINER] = errors
       })
     }
 

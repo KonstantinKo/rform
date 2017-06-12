@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import merge from 'lodash/merge'
+import forIn from 'lodash/forIn'
 import { cloneElement, Children } from 'react'
 
 import setForm from '../actions/setupAction'
@@ -92,18 +93,22 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const { handleResponse, afterResponse } = ownProps
 
     const formObject = new formObjectClass(rformState, formId)
-    if (ownProps.requireValid && !validateForm(formObject)) {
-      dispatch(
-        updateError(formId, formObject)
-      )
-    } else {
-      dispatch(
-        submitAjaxForm(
-          formId, ownProps.action, event.target, formObject,
-          handleResponse, afterResponse,
+    if (ownProps.requireValid) {
+      let result = validateForm(formObject)
+      if (!result.valid) {
+        forIn(result.errors, (errors, erroringFormId) =>
+          dispatch(updateError(erroringFormId, errors))
         )
-      )
+        return false
+      }
     }
+
+    dispatch(
+      submitAjaxForm(
+        formId, ownProps.action, event.target, formObject,
+        handleResponse, afterResponse,
+      )
+    )
     return false
   },
 

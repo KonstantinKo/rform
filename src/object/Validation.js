@@ -1,3 +1,5 @@
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 import Validator from './Validator'
 import { errorKey, ERRORCONTAINER } from '../utils/getErrors'
 
@@ -6,13 +8,12 @@ class NonValidator {
 }
 
 export default class Validation {
-  validate(property) {
+  ALL = 'ALL'
+
+  validate(property = this.ALL) {
     this._resetErrors()
     this.validation()
-    return(
-      !this.attributes[ERRORCONTAINER][property] ||
-      !this.attributes[ERRORCONTAINER][property].length
-    )
+    return this._validationErrorsIn(property)
   }
 
   configure(configurations) {
@@ -47,5 +48,14 @@ export default class Validation {
   _resetErrors() {
     this.attributes[this.ERRORCONTAINER] = {}
     this._currentSubmodel = null
+  }
+
+  _validationErrorsIn(property) {
+    const errors = this.attributes[ERRORCONTAINER]
+    if (property == this.ALL) {
+      return flatten(values(errors)).length && errors
+    } else {
+      return errors[property] && errors[property].length && errors
+    }
   }
 }

@@ -62,7 +62,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     const errors = formObject.attributes[ERRORCONTAINER]
 
     if (!errors && (!formState.errors || !formState.errors[errKey])) return
-    dispatchProps.dispatch(updateError(formId, formObject, errKey))
+    dispatchProps.dispatch(updateError(formId, errors, errKey))
   }
 
   return {
