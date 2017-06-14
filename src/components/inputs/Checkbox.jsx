@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react'
 
 export default class Checkbox extends Component {
-  componentDidMount() {
-    this.props.saveInitialValue()
+  componentDidUpdate() {
+    if (this.props.value === '') this.props.saveInitialValue()
   }
 
   render() {

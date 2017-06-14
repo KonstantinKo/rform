@@ -12,8 +12,8 @@ export default class Select extends Component {
     ).isRequired,
   }
 
-  componentDidMount() {
-    this.props.saveInitialValue()
+  componentDidUpdate() { // TODO: AND inital value != ''
+    if (this.props.value === '') this.props.saveInitialValue()
   }
 
   render() {
