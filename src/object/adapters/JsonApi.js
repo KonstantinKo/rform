@@ -38,7 +38,8 @@ export default class JsonApiAdapter extends BaseAdapter {
 
   get renderedJson() {
     let jsonObject = {
-      data: this._collectAllJsonPropsRecursively(this.attrs, this.baseConfig)
+      data: this._collectAllJsonPropsRecursively(this.attrs, this.baseConfig),
+      meta: this._buildMetaInformation(this.attrs, this.baseConfig)
     }
     return jsonObject
   }
@@ -54,6 +55,17 @@ export default class JsonApiAdapter extends BaseAdapter {
       this._addSubmodelPropsToJson(jsonObject, attrs, config)
       return jsonObject
     }
+  }
+
+  _buildMetaInformation(attrs, config) {
+    let jsonObject = {}
+    const form = this.form
+    const metaFields = [ 'utf8', 'commit' ]
+
+    for (let metaField of metaFields) {
+      jsonObject[metaField] = form[metaField] && form[metaField].value
+    }
+    return jsonObject
   }
 
   _addModelPropsToJson(json, attrs, config) {

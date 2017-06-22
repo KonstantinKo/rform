@@ -36,10 +36,10 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick(_e) {
     const formId = ownProps.formId
-
-    return dispatch(
-      updateAction(formId, 'commit', null, null, ownProps.commit)
+    dispatch(
+      updateAction(formId, 'commit', [], ownProps.commit)
     )
+    return true
   }
 })
 
