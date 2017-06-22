@@ -90,11 +90,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
     const { dispatch } = dispatchProps
     const { formObjectClass, formId, rformState } = stateProps
-    const { handleResponse, afterResponse } = ownProps
+    const { handleResponse, afterResponse, afterRequireValid } = ownProps
 
     const formObject = new formObjectClass(rformState, formId)
     if (ownProps.requireValid) {
       let result = validateForm(formObject)
+      if (afterRequireValid) afterRequireValid(result)
       if (!result.valid) {
         forIn(result.errors, (errors, erroringFormId) =>
           dispatch(updateError(erroringFormId, errors))
