@@ -35,6 +35,7 @@ export default class Form extends Component {
     formId: PropTypes.string,
     form: PropTypes.object,
     onSubmit: PropTypes.func,
+    preventEnterSubmit: PropTypes.bool,
   }
 
   getChildContext() {
@@ -46,6 +47,7 @@ export default class Form extends Component {
       formId: this.props.formId,
       form: this._form,
       onSubmit: this.props.onSubmit,
+      preventEnterSubmit: this.props.preventEnterSubmit,
     }
   }
 

@@ -71,7 +71,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
 
     onChange(event) {
-      const { formId, attribute, submodelPath } = ownProps
+      const { formId, attribute, submodelPath, preventEnterSubmit } = ownProps
       const { savedValue } = stateProps
       const newValue = event.target.value
       const changed = (newValue != savedValue)
@@ -91,6 +91,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
     onBlur(_event) {
       validate()
+    },
+
+    onKeyPress(event) {
+      if (ownProps.preventEnterSubmit && event.charCode == 13) {
+        event.preventDefault()
+        return false
+      }
+      return true
     },
 
     validate

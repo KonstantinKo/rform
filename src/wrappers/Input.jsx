@@ -15,6 +15,7 @@ export default class InputWrapper extends Component {
     form: PropTypes.object,
     onSubmit: PropTypes.func,
     formObjectClass: PropTypes.func,
+    preventEnterSubmit: PropTypes.bool,
   }
 
   render() {
