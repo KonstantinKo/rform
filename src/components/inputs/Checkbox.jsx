@@ -28,6 +28,7 @@ export default class Checkbox extends Component {
           onChange={onChange}
           value={checkedValue}
           disabled={disabled}
+          defaultChecked={checked}
         />
       </span>
     )
