@@ -1,3 +1,4 @@
+import isArray from 'lodash/isArray'
 import FormDataAdapter from './adapters/FormData'
 import Validation from './Validation'
 import mixin from '../utils/mixin'
@@ -161,8 +162,12 @@ export default class FormObject {
     }
 
     if (initialData.hasOwnProperty(submodel)) {
-      // form has internal nested submodels
-      dataSets.push(...initialData[submodel])
+      // form has internal nested submodel(s)
+      if (isArray(initialData[submodel])) {
+        dataSets.push(...initialData[submodel])
+      } else {
+        dataSets = [initialData[submodel]]
+      }
     }
     return dataSets
   }

@@ -11,8 +11,8 @@ const mapStateToProps = function(state, ownProps) {
         ownProps.submodelPath
       ),
       content: ownProps.content || ownProps.children || optionalTranslation(
-        'rform', ownProps.model, ...ownProps.submodelPath, ownProps.attribute,
-        'label'
+        'rform', ownProps.model, ...(ownProps.submodelPath || []),
+        ownProps.attribute, 'label'
       ) || ''
   }
 }
