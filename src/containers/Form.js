@@ -61,12 +61,13 @@ function assembleAttrsFromServer(seedData, formObjectClass) {
 
   // Otherwise assemble main and submodels' fields
   let attrs = merge({}, seedData.fields, seedData.errors)
-  for (let submodel of formObjectClass.submodels) {
-    if (seedData.fields[submodel]) {
-      let submodelData = seedData.fields[submodel]
-      attrs[submodel] = merge({}, submodelData.fields, submodelData.errors)
-    }
-  }
+  // TODO: reenable this, but consider there might be ids/ id arrays in there
+  // for (let submodel of formObjectClass.submodels) {
+  //   if (seedData.fields[submodel]) {
+  //     let submodelData = seedData.fields[submodel]
+  //     attrs[submodel] = merge({}, submodelData.fields, submodelData.errors)
+  //   }
+  // }
   return attrs
 }
 
@@ -90,7 +91,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
     const { dispatch } = dispatchProps
     const { formObjectClass, formId, rformState } = stateProps
-    const { handleResponse, afterResponse, afterRequireValid } = ownProps
+    const { afterResponse, afterRequireValid, beforeSubmit } = ownProps
 
     const formObject = new formObjectClass(rformState, formId)
     if (ownProps.requireValid) {
@@ -104,10 +105,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
       }
     }
 
+    if (beforeSubmit) beforeSubmit()
+
     dispatch(
       submitAjaxForm(
-        formId, ownProps.action, event.target, formObject,
-        handleResponse, afterResponse,
+        formId, ownProps.action, event.target, formObject, afterResponse,
       )
     )
     return false

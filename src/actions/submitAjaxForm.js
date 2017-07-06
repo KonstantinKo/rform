@@ -20,7 +20,7 @@ const handleAjaxResponse = (_changes, formErrorHash, _meta) => ({
 })
 
 export default function submitAjaxForm(
-  formId, url, form, formObject, handleResponse, afterResponse
+  formId, url, form, formObject, afterResponse
 ) {
   return function(dispatch) {
     dispatch(submitAjaxFormRequest(formId))
@@ -40,20 +40,21 @@ export default function submitAjaxForm(
       }
     ).then(json => {
       const evaluatedResponseContents = formObject.handleAjaxResponse(json)
-      if (handleResponse) {
-        // TODO: Do we still need both handleResponse AND afterResponse?
-        handleResponse(formId, ...evaluatedResponseContents, json)
-      }
+      // if (handleResponse) {
+      //   // TODO: Do we still need both handleResponse AND afterResponse?
+      //   handleResponse(formId, ...evaluatedResponseContents, json)
+      // }
 
       dispatch(
         handleAjaxResponse(...evaluatedResponseContents)
       )
 
       const responseErrors = evaluatedResponseContents[1]
-      if (!responseErrors) dispatch(setFormSaved(formId))
+      if (!responseErrors || !Object.keys(responseErrors).length)
+        dispatch(setFormSaved(formId))
 
-      if (afterResponse) afterResponse(json)
+      if (afterResponse)
+        afterResponse(formId, ...evaluatedResponseContents, json)
     })
   }
 }
-
