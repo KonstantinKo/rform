@@ -165,7 +165,7 @@ export default class FormObject {
       // form has internal nested submodel(s)
       if (isArray(initialData[submodel])) {
         dataSets.push(...initialData[submodel])
-      } else {
+      } else if (initialData[submodel]) {
         dataSets = [initialData[submodel]]
       }
     }
