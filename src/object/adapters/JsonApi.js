@@ -26,9 +26,13 @@ export default class JsonApiAdapter extends BaseAdapter {
     let changes = {}
 
     if (json.data) {
-      changes[json.data.type] = {}
-      changes[json.data.type][json.data.id] =
-        merge(json.data.attributes, { id: json.data.id })
+      changes = this._changeElementFromJsonapiObject(json.data)
+    }
+
+    if (json.included) {
+      for (let includedObject of json.included) {
+        merge(changes, this._changeElementFromJsonapiObject(includedObject))
+      }
     }
 
     const errors = this._deserializeErrors(json.errors)
@@ -45,6 +49,14 @@ export default class JsonApiAdapter extends BaseAdapter {
   }
 
   // --- Private --- //
+
+  _changeElementFromJsonapiObject(object) {
+    let change = {}
+    change[object.type] = {}
+    change[object.type][object.id] =
+      merge(object.attributes || {}, { id: object.id })
+    return change
+  }
 
   _collectAllJsonPropsRecursively(attrs, config) {
     if (String(attrs).match(/^\d+$/)) { // given obj was an ID, not a submodel
