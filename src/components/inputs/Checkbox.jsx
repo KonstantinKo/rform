@@ -2,13 +2,14 @@ import React, { PropTypes, Component } from 'react'
 
 export default class Checkbox extends Component {
   componentDidUpdate() {
-    if (this.props.value === '') this.props.saveInitialValue()
+    if ([undefined, ''].includes(this.props.value))
+      this.props.saveInitialValue()
   }
 
   render() {
     const {
       id, name, ariaLabel, labelText, onChange, combinedClassName,
-      checkboxWrapperClassName, checked, checkedValue, uncheckedValue,
+      checkboxWrapperClassName, value, checkedValue, uncheckedValue,
       disabled,
     } = this.props
 
@@ -28,7 +29,7 @@ export default class Checkbox extends Component {
           onChange={onChange}
           value={checkedValue}
           disabled={disabled}
-          defaultChecked={checked}
+          defaultChecked={value}
         />
       </span>
     )

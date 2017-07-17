@@ -19,7 +19,7 @@ const mapStateToProps = function(state, ownProps) {
   const attrs = rformState[formId]
   const path = navigateThroughSubmodels(attrs, submodelPath)
   let value = ''
-  if (path && !isNil(path[attribute])) value = String(path[attribute])
+  if (path && !isNil(path[attribute])) value = path[attribute]
 
   const savedValue =
     (attrs && attrs._savedAttributes && attrs._savedAttributes[attribute])

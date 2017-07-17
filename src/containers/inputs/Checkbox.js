@@ -5,17 +5,13 @@ import Checkbox from '../../components/inputs/Checkbox'
 const mapStateToProps = function(state, ownProps) {
   const checkedValue = ownProps.checkedValue || '1'
   const uncheckedValue = ownProps.uncheckedValue || '0'
-  const value = ownProps.value
 
   let checkboxWrapperClassName
-  let checked = false
-  if (value === checkedValue) {
-    checked = true
+  if (ownProps.value) {
     checkboxWrapperClassName = 'checked'
   }
 
   return {
-    checked,
     checkedValue,
     uncheckedValue,
     checkboxWrapperClassName,
@@ -32,13 +28,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   onChange(event) {
-    const { checkedValue, uncheckedValue } = stateProps
     const { formId, attribute, submodelPath } = ownProps
 
     dispatchProps.dispatch(
       updateAction(
-        formId, attribute, submodelPath,
-        event.target.checked ? checkedValue : uncheckedValue
+        formId, attribute, submodelPath, event.target.checked
       )
     )
 
@@ -49,14 +43,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   // Save the initial checked/unchecked state
   saveInitialValue() {
-    const {
-      formId, attribute, submodelPath, value
-    } = ownProps
+    const { formId, attribute, submodelPath } = ownProps
 
     dispatchProps.dispatch(
-      updateAction(
-        formId, attribute, submodelPath, value || stateProps.uncheckedValue
-      )
+      updateAction(formId, attribute, submodelPath, false)
     )
   }
 })
