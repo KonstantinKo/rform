@@ -97,10 +97,10 @@ export default class JsonApiAdapter extends BaseAdapter {
     const { submodelConfigs } = config
 
     forIn(submodelConfigs, (innerConfig, submodel) => {
-      if (attrs[submodel] && !attrs[submodel].length) return
       json.relationships = json.relationships || {}
       json.relationships[submodel] = {}
 
+      if (attrs[submodel] && !attrs[submodel].length) return
       if (innerConfig.relationship == 'oneToOne') {
         json.relationships[submodel].data =
           this._collectAllJsonPropsRecursively(

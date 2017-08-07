@@ -20,7 +20,7 @@ const handleAjaxResponse = (_changes, formErrorHash, _meta) => ({
 })
 
 export default function submitAjaxForm(
-  formId, url, form, formObject, afterResponse
+  formId, url, form, formObject, afterResponse, afterError = function(){}
 ) {
   return function(dispatch) {
     dispatch(submitAjaxFormRequest(formId))
@@ -35,6 +35,7 @@ export default function submitAjaxForm(
         dispatch(submitAjaxFormReturn(formId))
         if (status >= 400) {
           console.error(`Submit Ajax Form Error ${status}: ${statusText}`)
+          afterError(formId, response.clone())
         }
         return response.json()
       }

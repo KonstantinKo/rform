@@ -91,7 +91,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
     const { dispatch } = dispatchProps
     const { formObjectClass, formId, rformState } = stateProps
-    const { afterResponse, afterRequireValid, beforeSubmit } = ownProps
+    const {
+      afterResponse, afterRequireValid, beforeSubmit, afterError
+    } = ownProps
 
     const formObject = new formObjectClass(rformState, formId)
     if (ownProps.requireValid) {
@@ -110,6 +112,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     dispatch(
       submitAjaxForm(
         formId, ownProps.action, event.target, formObject, afterResponse,
+        afterError
       )
     )
     return false
