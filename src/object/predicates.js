@@ -2,7 +2,8 @@ import isArray from 'lodash/isArray'
 
 export default {
   'filled?': {
-    check: (validatable) => !!validatable,
+    check: (validatable) =>
+      isArray(validatable) ? validatable.length : !!validatable,
   },
   'int?': {
     check: (validatable) => /^\d+$/.test(validatable),
