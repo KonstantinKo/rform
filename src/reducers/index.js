@@ -69,6 +69,14 @@ export default function reducer(state = initialState, action) {
     newState.isSubmitting[action.formId] = false
     return newState
 
+  case '_RFORM_SUBMIT_AJAX_FORM_BUTTON_REQUEST':
+    newState.isSubmitting[`${action.method}:${action.action}`] = true
+    return newState
+
+  case '_RFORM_SUBMIT_AJAX_FORM_BUTTON_RETURN':
+    newState.isSubmitting[`${action.method}:${action.action}`] = false
+    return newState
+
   case '_RFORM_HANDLE_AJAX_RESPONSE':
     let responseChanges = {}
     if (action.formErrorHash) {

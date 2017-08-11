@@ -4,17 +4,16 @@ import BaseAdapter from './Base'
 
 export default class JsonApiAdapter extends BaseAdapter {
   get requestHash() {
-    const data = this.renderedJson
-
     let options = {
       method: this.form._method.value,
-      body: JSON.stringify(data),
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/vnd.api+json',
         Accept: 'application/vnd.api+json',
       }
     }
+
+    if (this.attrs) options.body = JSON.stringify(this.renderedJson)
 
     if (this.form.authenticity_token)
       options.headers['X-CSRF-TOKEN'] = this.form.authenticity_token.value

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import submitAjaxFormButton from '../actions/submitAjaxFormButton'
 import FormButton from '../components/FormButton'
 
 const mapStateToProps = (state, ownProps) => {
@@ -11,21 +12,38 @@ const mapStateToProps = (state, ownProps) => {
       ownProps.authToken || state.authToken ||
       (state.settings && state.settings.authToken),
 
-    onSubmit: function(event, form) {
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const submit = (form) => {
+    const {
+      ajax, action, method, afterSuccess, afterError, adapter
+    } = ownProps
+
+    if (ajax) {
+      dispatch(submitAjaxFormButton(
+        new adapter(form), action, method, afterSuccess, afterError
+      ))
+    } else {
+      form.submit()
+    }
+  }
+
+  return {
+    onSubmit(event, form) {
+      event.preventDefault()
+
       const confirmationMessage = ownProps.confirm
 
       if (typeof confirmationMessage === 'string') {
-        event.preventDefault()
-
-        const result = window.confirm(confirmationMessage)
-        if (result) form.submit()
+        if (window.confirm(confirmationMessage)) submit(form)
+      } else {
+        submit(form)
       }
     }
   }
 }
-
-const mapDispatchToProps = () => ({
-})
 
 export default connect(
   mapStateToProps,
