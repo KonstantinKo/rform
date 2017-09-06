@@ -1,5 +1,6 @@
 import assign from 'lodash/assign'
 import merge from 'lodash/merge'
+import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
 import remove from 'lodash/remove'
 import forIn from 'lodash/forIn'
@@ -42,8 +43,12 @@ export default function reducer(state = initialState, action) {
       navigateThroughSubmodels(formBasePath, submodelPath, true)
     submodelBasePath[attribute] = action.value
 
-    if (changed == undefined)
-      changed = submodelBasePath[attribute] != submodelBasePath._savedAttributes[attribute]
+    if (changed == undefined){
+      if (submodelBasePath._savedAttributes[attribute] == undefined)
+        changed = !!submodelBasePath[attribute]
+      else
+        changed = !isEqual(submodelBasePath[attribute], submodelBasePath._savedAttributes[attribute])
+    }
     const changesBasePath = navigateThroughSubmodels(
       formBasePath._changes, submodelPath, true, []
     )
