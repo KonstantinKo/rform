@@ -35,18 +35,22 @@ export default function reducer(state = initialState, action) {
     return newState
 
   case '_RFORM_UPDATE_FORM_ATTRIBUTE':
-    const { attribute, formId, submodelPath, changed } = action
+    const { attribute, formId, submodelPath } = action
+    let changed = action.changed
     let formBasePath = newState[formId]
     const submodelBasePath =
       navigateThroughSubmodels(formBasePath, submodelPath, true)
-    submodelBasePath[action.attribute] = action.value
+    submodelBasePath[attribute] = action.value
 
+    if (changed == undefined)
+      changed = submodelBasePath[attribute] != submodelBasePath._savedAttributes[attribute]
     const changesBasePath = navigateThroughSubmodels(
-      formBasePath._changes, submodelPath, true, [])
+      formBasePath._changes, submodelPath, true, []
+    )
     if (changed === true && !changesBasePath.includes(attribute))
       changesBasePath.push(attribute)
     if (changed === false && changesBasePath.includes(attribute))
-      changesBasePath.pop(attribute)
+      remove(changesBasePath, (value) => value == attribute )
 
     return newState
 
