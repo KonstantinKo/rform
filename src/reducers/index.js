@@ -1,5 +1,7 @@
 import assign from 'lodash/assign'
 import merge from 'lodash/merge'
+import isArray from 'lodash/isArray'
+import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
 import remove from 'lodash/remove'
 import forIn from 'lodash/forIn'
@@ -35,18 +37,22 @@ export default function reducer(state = initialState, action) {
     return newState
 
   case '_RFORM_UPDATE_FORM_ATTRIBUTE':
-    const { attribute, formId, submodelPath, changed } = action
+    const { attribute, formId, submodelPath } = action
+    let changed = action.changed
     let formBasePath = newState[formId]
     const submodelBasePath =
       navigateThroughSubmodels(formBasePath, submodelPath, true)
-    submodelBasePath[action.attribute] = action.value
+    submodelBasePath[attribute] = action.value
+
+    changed = analyzeChanges(changed, submodelBasePath, attribute)
 
     const changesBasePath = navigateThroughSubmodels(
-      formBasePath._changes, submodelPath, true, [])
+      formBasePath._changes, submodelPath, true, []
+    )
     if (changed === true && !changesBasePath.includes(attribute))
       changesBasePath.push(attribute)
     if (changed === false && changesBasePath.includes(attribute))
-      changesBasePath.pop(attribute)
+      remove(changesBasePath, (value) => value == attribute )
 
     return newState
 
@@ -112,4 +118,21 @@ export default function reducer(state = initialState, action) {
   default:
     return newState
   }
+}
+
+function analyzeChanges(changed, submodelBasePath, attribute) {
+  if (changed === undefined){
+    if (submodelBasePath._savedAttributes[attribute] === undefined)
+      changed = !!submodelBasePath[attribute]
+    else {
+      let newValue = submodelBasePath[attribute]
+      if (isArray(newValue))
+        newValue = newValue.sort()
+      let currentValue = submodelBasePath._savedAttributes[attribute]
+      if (isArray(currentValue))
+        currentValue = currentValue.sort()
+      changed = !isEqual(newValue, currentValue)
+    }
+  }
+  return changed
 }

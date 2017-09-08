@@ -74,12 +74,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       const { formId, attribute, submodelPath, preventEnterSubmit } = ownProps
       const { savedValue } = stateProps
       const newValue = event.target.value
-      const changed = (newValue != savedValue)
 
       dispatchProps.dispatch(
-        updateAction(
-          formId, attribute, submodelPath, newValue, changed
-        )
+        updateAction(formId, attribute, submodelPath, newValue)
       )
 
       if (ownProps.submitOnChange) {
