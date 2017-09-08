@@ -113,8 +113,8 @@ export default function reducer(state = initialState, action) {
 }
 
 function analyzeChanges(changed, submodelBasePath, attribute) {
-  if (changed == undefined){
-    if (submodelBasePath._savedAttributes[attribute] == undefined)
+  if (changed === undefined){
+    if (submodelBasePath._savedAttributes[attribute] === undefined)
       changed = !!submodelBasePath[attribute]
     else {
       let newValue = submodelBasePath[attribute]
