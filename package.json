@@ -1,6 +1,6 @@
 {
   "name": "rform",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "description": "React/Redux form helpers optimized for use with Ruby on Rails",
   "main": "dist/index.js",
   "repository": {

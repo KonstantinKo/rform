@@ -120,9 +120,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   ensureStateObjectExistence() {
     if (stateProps.editedStateObject) return
-    return dispatchProps.dispatch(
+    //  if there is no state object yet, create one
+    dispatchProps.dispatch(
       setForm(stateProps.formId, stateProps.existingAttrs)
     )
+
+    // call initial data setting callback
+    ownProps.formStateDidMount &&
+      ownProps.formStateDidMount(stateProps.formId, stateProps.existingAttrs)
   },
 })
 

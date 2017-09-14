@@ -96,7 +96,9 @@ export default function reducer(state = initialState, action) {
     return newState
 
   case '_RFORM_REGISTER_SUBMODEL_FORM':
-    const { registeringFormId, submodelName, registeredSubmodelFormId } = action
+    const {
+      registeringFormId, submodelName, registeredSubmodelFormId
+    } = action
     newState[registeringFormId]._registeredSubmodelForms =
       newState[registeringFormId]._registeredSubmodelForms || {}
     newState[registeringFormId]._registeredSubmodelForms[submodelName] =
