@@ -1,9 +1,11 @@
 import isArray from 'lodash/isArray'
+import isNil from 'lodash/isNil'
 
 export default {
   'filled?': {
     check: (validatable) =>
-      isArray(validatable) ? validatable.length : !!validatable,
+      isArray(validatable) ?
+        validatable.length : !isNil(validatable) && validatable !== '',
   },
   'int?': {
     check: (validatable) => /^\d+$/.test(validatable),

@@ -32,6 +32,7 @@ export default class InputSet extends Component {
     const {
       errors, combinedWrapperClassName, labelAfterInput, labelText, formId,
       ariaLabelOnly, attribute, labelClassName, errorClassName, model,
+      children
     } = this.props
 
     if (ariaLabelOnly) {
@@ -43,6 +44,8 @@ export default class InputSet extends Component {
             className={errorClassName} attribute={attribute} errors={errors}
             formId={formId}
           />
+
+          {children}
         </div>
       )
     }
@@ -60,6 +63,8 @@ export default class InputSet extends Component {
             className={errorClassName} attribute={attribute} errors={errors}
             formId={formId}
           />
+
+          {children}
         </div>
       )
     }
@@ -77,6 +82,8 @@ export default class InputSet extends Component {
             className={errorClassName} attribute={attribute} errors={errors}
             formId={formId}
           />
+
+          {children}
         </div>
       )
     }
