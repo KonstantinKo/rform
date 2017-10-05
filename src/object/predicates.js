@@ -14,7 +14,7 @@ export default {
     check: (validatable) => /^\d{4}-\d{2}-\d{2}$/.test(validatable),
   },
   'max_size?': {
-    check: (validatable, option) => validatable.length < option,
+    check: (validatable, option) => validatable.length <= option,
     translationOptions: option => ({ num: option }),
   },
   'gt?': {
