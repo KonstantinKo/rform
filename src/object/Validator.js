@@ -41,7 +41,7 @@ export default class Validator {
     if (typeof predicateCheck == 'object') predicateCheck = predicateCheck.check
     if (!predicateCheck) throw new Error(`Unknown predicate "${predicate}"`)
 
-    if (!this._validatable || !predicateCheck(this._validatable, option)) {
+    if (!predicateCheck(this._validatable, option)) {
       errors.push(this._errorMessage(predicate, option))
     }
   }
